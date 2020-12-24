@@ -1,0 +1,194 @@
+
+CREATE TABLE tbl_forma_pago (
+                id_forma_pago INT AUTO_INCREMENT NOT NULL,
+                tipo_pago VARCHAR(120) NOT NULL,
+                PRIMARY KEY (id_forma_pago)
+);
+
+
+CREATE TABLE tbl_categoria (
+                id_categoria INT AUTO_INCREMENT NOT NULL,
+                nombre_categoria VARCHAR(120) NOT NULL,
+                PRIMARY KEY (id_categoria)
+);
+
+
+CREATE TABLE tbl_producto (
+                id_producto INT AUTO_INCREMENT NOT NULL,
+                nombre_producto VARCHAR(120) NOT NULL,
+                marca_producto VARCHAR(120) NOT NULL,
+                serie_producto VARCHAR(120) NOT NULL,
+                modelo_producto VARCHAR(120) NOT NULL,
+                id_categoria INT NOT NULL,
+                PRIMARY KEY (id_producto)
+);
+
+
+CREATE TABLE tbl_pais (
+                id_pais INT AUTO_INCREMENT NOT NULL,
+                cod_pais VARCHAR(10) NOT NULL,
+                pais_pais VARCHAR(120) NOT NULL,
+                PRIMARY KEY (id_pais)
+);
+
+
+CREATE TABLE tbl_provincia (
+                id_provincia INT AUTO_INCREMENT NOT NULL,
+                provincia_provincia VARCHAR(120) NOT NULL,
+                id_pais INT NOT NULL,
+                PRIMARY KEY (id_provincia)
+);
+
+
+CREATE TABLE tbl_canton (
+                id_canton INT AUTO_INCREMENT NOT NULL,
+                canton_canton VARCHAR(120) NOT NULL,
+                id_provincia INT NOT NULL,
+                PRIMARY KEY (id_canton)
+);
+
+
+CREATE TABLE tbl_parroquia (
+                id_parroquia INT AUTO_INCREMENT NOT NULL,
+                parroquia_parroquia VARCHAR(120) NOT NULL,
+                id_canton INT NOT NULL,
+                PRIMARY KEY (id_parroquia)
+);
+
+
+CREATE TABLE tbl_proveedor (
+                id_proveedor INT AUTO_INCREMENT NOT NULL,
+                cedula_provee VARCHAR(10) NOT NULL,
+                nombre_provee VARCHAR(120) NOT NULL,
+                apellido_provee VARCHAR(120) NOT NULL,
+                telefono_provee VARCHAR(10) NOT NULL,
+                correo_provee VARCHAR(220) NOT NULL,
+                id_parroquia INT NOT NULL,
+                direccion_provee VARCHAR(120) NOT NULL,
+                PRIMARY KEY (id_proveedor)
+);
+
+
+CREATE TABLE detalle_kardex (
+                id_detalle_kardex INT AUTO_INCREMENT NOT NULL,
+                id_proveedor INT NOT NULL,
+                id_producto INT NOT NULL,
+                stock_total_kardex INT NOT NULL,
+                precio_kardex DECIMAL(10,2) NOT NULL,
+                estado_kardex VARCHAR(120) NOT NULL,
+                stock_parcial_kardex INT NOT NULL,
+                iva_producto VARCHAR(2) NOT NULL,
+                descuento_kardex DECIMAL(10,2) NOT NULL,
+                PRIMARY KEY (id_detalle_kardex)
+);
+
+
+CREATE TABLE tbl_clliente (
+                id_cliente INT AUTO_INCREMENT NOT NULL,
+                cedula_cliente VARCHAR(10) NOT NULL,
+                nombre_cliente VARCHAR(120) NOT NULL,
+                apellido_cliente VARCHAR(120) NOT NULL,
+                telefono_cliente VARCHAR(120) NOT NULL,
+                correo_cliente VARCHAR(220) NOT NULL,
+                id_parroquia INT NOT NULL,
+                direccion_cliente VARCHAR(120) NOT NULL,
+                PRIMARY KEY (id_cliente)
+);
+
+
+CREATE TABLE tbl_facturacion (
+                id_facturacion INT AUTO_INCREMENT NOT NULL,
+                n_factura VARCHAR(10) NOT NULL,
+                id_cliente INT NOT NULL,
+                iva_factura DECIMAL(10,2) NOT NULL,
+                total_factura DECIMAL(10,2) NOT NULL,
+                descuento_factura DECIMAL(10,2) NOT NULL,
+                fecha_factura DATE NOT NULL,
+                hora_factura TIME NOT NULL,
+                id_forma_pago INT NOT NULL,
+                PRIMARY KEY (id_facturacion)
+);
+
+
+CREATE TABLE detalle_factura (
+                id_detalle_factura INT AUTO_INCREMENT NOT NULL,
+                id_facturacion INT NOT NULL,
+                id_detalle_kardex INT NOT NULL,
+                cantidad_cliente INT NOT NULL,
+                precio_unitario_cliente DECIMAL(10,2) NOT NULL,
+                precio_total_cliente DECIMAL(10,2) NOT NULL,
+                PRIMARY KEY (id_detalle_factura)
+);
+
+
+ALTER TABLE tbl_facturacion ADD CONSTRAINT tbl_forma_pago_tbl_facturacion_fk
+FOREIGN KEY (id_forma_pago)
+REFERENCES tbl_forma_pago (id_forma_pago)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE tbl_producto ADD CONSTRAINT tbl_categoria_tbl_producto_fk
+FOREIGN KEY (id_categoria)
+REFERENCES tbl_categoria (id_categoria)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE detalle_kardex ADD CONSTRAINT tbl_producto_detalle_kardex_fk
+FOREIGN KEY (id_producto)
+REFERENCES tbl_producto (id_producto)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE tbl_provincia ADD CONSTRAINT tbl_pais_tbl_provincia_fk
+FOREIGN KEY (id_pais)
+REFERENCES tbl_pais (id_pais)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE tbl_canton ADD CONSTRAINT tbl_provincia_tbl_canton_fk
+FOREIGN KEY (id_provincia)
+REFERENCES tbl_provincia (id_provincia)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE tbl_parroquia ADD CONSTRAINT tbl_canton_tbl_parroquia_fk
+FOREIGN KEY (id_canton)
+REFERENCES tbl_canton (id_canton)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE tbl_clliente ADD CONSTRAINT tbl_parroquia_tbl_clliente_fk
+FOREIGN KEY (id_parroquia)
+REFERENCES tbl_parroquia (id_parroquia)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE tbl_proveedor ADD CONSTRAINT tbl_parroquia_tbl_proveedor_fk
+FOREIGN KEY (id_parroquia)
+REFERENCES tbl_parroquia (id_parroquia)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE detalle_kardex ADD CONSTRAINT tbl_proveedor_detalle_kardex_fk
+FOREIGN KEY (id_proveedor)
+REFERENCES tbl_proveedor (id_proveedor)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE detalle_factura ADD CONSTRAINT detalle_kardex_detalle_factura_fk
+FOREIGN KEY (id_detalle_kardex)
+REFERENCES detalle_kardex (id_detalle_kardex)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE tbl_facturacion ADD CONSTRAINT tbl_clliente_tbl_facturacion_fk
+FOREIGN KEY (id_cliente)
+REFERENCES tbl_clliente (id_cliente)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE detalle_factura ADD CONSTRAINT tbl_facturacion_detalle_factura_fk
+FOREIGN KEY (id_facturacion)
+REFERENCES tbl_facturacion (id_facturacion)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;

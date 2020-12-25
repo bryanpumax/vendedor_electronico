@@ -1,0 +1,25 @@
+
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/JSZip-2.5.0/jszip.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/pdfmake-0.1.36/pdfmake.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/pdfmake-0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/DataTables-1.10.21/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/DataTables-1.10.21/js/dataTables.bootstrap4.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/AutoFill-2.3.5/js/dataTables.autoFill.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/AutoFill-2.3.5/js/autoFill.bootstrap4.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Buttons-1.6.3/js/dataTables.buttons.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Buttons-1.6.3/js/buttons.bootstrap4.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Buttons-1.6.3/js/buttons.colVis.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Buttons-1.6.3/js/buttons.flash.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Buttons-1.6.3/js/buttons.html5.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Buttons-1.6.3/js/buttons.print.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/ColReorder-1.5.2/js/dataTables.colReorder.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/FixedColumns-3.3.1/js/dataTables.fixedColumns.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/FixedHeader-3.1.7/js/dataTables.fixedHeader.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/KeyTable-2.5.2/js/dataTables.keyTable.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Responsive-2.2.5/js/dataTables.responsive.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/RowGroup-1.1.2/js/dataTables.rowGroup.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/RowReorder-1.2.7/js/dataTables.rowReorder.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Scroller-2.0.2/js/dataTables.scroller.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/SearchPanes-1.1.1/js/dataTables.searchPanes.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/SearchPanes-1.1.1/js/searchPanes.bootstrap4.js"></script>
+<script type="text/javascript" src="https://lab-mrtecks.com/assets/plugins/datables/Select-1.3.1/js/dataTables.select.js"></script>

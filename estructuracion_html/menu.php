@@ -18,26 +18,6 @@
                 <span class="nav-link-text">Inicio</span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="examples/icons.html">
-                <i class="ni ni-planet text-orange"></i>
-                <span class="nav-link-text">Productos</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="examples/map.html">
-                <i class="ni ni-pin-3 text-primary"></i>
-                <span class="nav-link-text">Proceso</span>
-              </a>
-            </li>
-            
-           
-            <li class="nav-item">
-              <a class="nav-link" href="examples/login.html">
-                <i class="ni ni-key-25 text-info"></i>
-                <span class="nav-link-text">Login/Registro</span>
-              </a>
-            </li>
              <li class="nav-item d-xl-none">
           
               <div class=" nav-link sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">
@@ -60,7 +40,7 @@
     </div>
   </nav>
   
-
+<!-- contenido de la  derecha -->
 <div class="main-content" id="panel">
 
         <nav class="navbar navbar-top navbar-expand navbar-dark   border-bottom">

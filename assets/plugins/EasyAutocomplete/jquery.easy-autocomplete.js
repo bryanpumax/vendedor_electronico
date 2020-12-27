@@ -26,6 +26,8 @@ var EasyAutocomplete = (function(scope){
 
 			getValue: function(element) {
 				return element;
+			},getImagen: function(element) {
+				return element;
 			},
 
 			autocompleteOff: true,

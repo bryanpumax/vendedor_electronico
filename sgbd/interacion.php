@@ -6,6 +6,7 @@ $sentecia="SELECT $campo from $tabla $texto_condicion;";
  $sql = $pdo->query($sentecia);
 return $sql;
 }
+
 function insertar($tabla,$campo,$texto)
 {include "mysql.php";
         
@@ -31,6 +32,12 @@ function procedimiento($procedimiento,$valor)
 {include "mysql.php";
 //valor debes enviarle  con una  cadena  de texto
         $sentecia= "Call $procedimiento($valor);"; 
+ $sql = $pdo->query($sentecia);
+return $sql;
+}
+function otras($texto_condicion)
+{include "mysql.php";
+$sentecia=$texto_condicion;
  $sql = $pdo->query($sentecia);
 return $sql;
 }

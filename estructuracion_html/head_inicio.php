@@ -23,15 +23,31 @@ $urls=url();
          <link rel="stylesheet" href="<?=$urls?>assets/css/nucleo.css">
          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<link rel="stylesheet" href="<?=$urls?>assets/css/argon.css?v=1.2.0" type="text/css">
-         <link rel="icon" type="image/jpg" href="assets/imagen/logo.png" >
+         <link rel="stylesheet" href="<?=$urls?>assets/css/argon.css?v=1.2.0" type="text/css">
+         <link rel="icon" type="image/jpg" href="assets/imagen/logo.png">
          <?php include($_SERVER['DOCUMENT_ROOT']."/vendedor_electronico/assets/plugins/datables/css.php");?>
 
- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
-     <link rel="stylesheet" href="<?=$urls?>assets/css/all.min.css" type="text/css">
+         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+         <link rel="stylesheet" href="<?=$urls?>assets/css/all.min.css" type="text/css">
          <!-- <META HTTP-EQUIV="Refresh" CONTENT="10">10 segundos -->
          <META HTTP-EQUIV="Expires" CONTENT="10:00:00 GMT">
-      
+
+
+         <link href="<?=$urls?>assets/plugins/EasyAutocomplete/easy-autocomplete.min.css" rel="stylesheet"
+                 type="text/css">
+         <link href="<?=$urls?>assets/plugins/EasyAutocomplete/easy-autocomplete.themes.min.css" rel="stylesheet"
+                 type="text/css">
+        <script src="<?=$urls?>assets/plugins/EasyAutocomplete/jquery-1.11.2.min.js"></script>
+ 
+         <script src="<?=$urls?>assets/plugins/EasyAutocomplete/jquery.easy-autocomplete.min.js" type="text/javascript">
+         </script>
+       
  </head>
+
+  
+	 
+	 
+		 
+		 
 
  <body>

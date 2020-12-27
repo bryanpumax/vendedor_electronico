@@ -8,7 +8,11 @@ include("http://localhost/vendedor_electronico/estructuracion_html/menu.php");
         <div class="container-fluid mt--3">
                 <div class="row">
                         <div class="col-xl-8">
-                                gggggggggggggggggggggggg
+                       <?php
+                       $página_inicio = file_get_contents('http://localhost/vendedor_electronico/algoritmo/buscarbdd.php');
+echo $página_inicio;
+                       ?>
+                       <div class="vista">tabla</div>
                         </div>
 
                 </div>

@@ -1,9 +1,3 @@
-CREATE TABLE tbl_imagen (
-                id_imagen INT AUTO_INCREMENT NOT NULL,
-                ruta VARCHAR(300) NOT NULL,
-                id_producto INT NOT NULL,
-                PRIMARY KEY (id_imagen)
-);
 
 CREATE TABLE tbl_forma_pago (
                 id_forma_pago INT AUTO_INCREMENT NOT NULL,
@@ -86,6 +80,15 @@ CREATE TABLE detalle_kardex (
                 iva_producto VARCHAR(2) NOT NULL,
                 descuento_kardex DECIMAL(10,2) NOT NULL,
                 PRIMARY KEY (id_detalle_kardex)
+);
+
+
+CREATE TABLE tbl_imagen (
+                id_imagen INT AUTO_INCREMENT NOT NULL,
+                ruta VARCHAR(300) NOT NULL,
+                color VARCHAR(130) NOT NULL,
+                id_detalle_kardex INT NOT NULL,
+                PRIMARY KEY (id_imagen)
 );
 
 
@@ -187,6 +190,12 @@ REFERENCES detalle_kardex (id_detalle_kardex)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
+ALTER TABLE tbl_imagen ADD CONSTRAINT detalle_kardex_tbl_imagen_fk
+FOREIGN KEY (id_detalle_kardex)
+REFERENCES detalle_kardex (id_detalle_kardex)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
 ALTER TABLE tbl_facturacion ADD CONSTRAINT tbl_clliente_tbl_facturacion_fk
 FOREIGN KEY (id_cliente)
 REFERENCES tbl_clliente (id_cliente)
@@ -196,11 +205,5 @@ ON UPDATE NO ACTION;
 ALTER TABLE detalle_factura ADD CONSTRAINT tbl_facturacion_detalle_factura_fk
 FOREIGN KEY (id_facturacion)
 REFERENCES tbl_facturacion (id_facturacion)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-ALTER TABLE tbl_imagen ADD CONSTRAINT tbl_producto_tbl_imagen_fk
-FOREIGN KEY (id_producto)
-REFERENCES tbl_producto (id_producto)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;

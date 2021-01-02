@@ -1,7 +1,7 @@
 var options = {
         url: "algoritmo/modelo.php?dato=auto",
 
-        getValue: "nombre_producto",getImagen:"serie_producto",
+        getValue: "nombre_producto", 
 
         template: {
                 type: "custom",

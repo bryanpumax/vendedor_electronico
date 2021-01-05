@@ -73,8 +73,16 @@ function cerrarmodal() {
 
 }
 var click=0;
-function seleccionar_color(usuario,id_imagen,detalle_kardex) {
+function seleccionar_color(usuario,id_imagen,detalle_kardex,login) {
     
     $("#prod"+id_imagen).addClass("text-primary")
-
+    var variable="dato=carrito&usuario="+usuario+"&id_imagen="+id_imagen+"&detalle="+detalle_kardex+"&login="+login;
+    $.ajax({
+        type: "GET",
+     url: "http://localhost/vendedor_electronico/algoritmo/modelo.php",
+        data: variable, 
+        success: function (response) {
+            $(".cantidad_producto").html(response)
+        }
+    });
 }

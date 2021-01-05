@@ -33,7 +33,7 @@ function procedimiento($procedimiento,$valor)
 //valor debes enviarle  con una  cadena  de texto
         $sentecia= "Call $procedimiento($valor);"; 
  $sql = $pdo->query($sentecia);
-return $sql;
+return $sentecia;
 }
 function otras($texto_condicion)
 {include "mysql.php";

@@ -1,4 +1,16 @@
 
+CREATE TABLE tmp_factura (
+                id_factura INT AUTO_INCREMENT NOT NULL,
+                usuario_tmp VARCHAR(120) NOT NULL,
+                descuento_factura DECIMAL(10,2) NOT NULL,
+                fecha_factura DATE NOT NULL,
+                total_factura DECIMAL(10,2) NOT NULL,
+                iva_factura DECIMAL(10,2) NOT NULL,
+                hora_factura TIME NOT NULL,
+                PRIMARY KEY (id_factura)
+);
+
+
 CREATE TABLE tbl_forma_pago (
                 id_forma_pago INT AUTO_INCREMENT NOT NULL,
                 tipo_pago VARCHAR(120) NOT NULL,
@@ -83,6 +95,17 @@ CREATE TABLE detalle_kardex (
 );
 
 
+CREATE TABLE tmp_detalle (
+                id_detalle INT AUTO_INCREMENT NOT NULL,
+                id_detalle_kardex INT NOT NULL,
+                id_factura INT NOT NULL,
+                cantidad INT NOT NULL,
+                precio_unitario_cliente DECIMAL(10,2) NOT NULL,
+                precio_total_cliente DECIMAL(10,2) NOT NULL,
+                PRIMARY KEY (id_detalle)
+);
+
+
 CREATE TABLE tbl_imagen (
                 id_imagen INT AUTO_INCREMENT NOT NULL,
                 ruta VARCHAR(300) NOT NULL,
@@ -129,6 +152,12 @@ CREATE TABLE detalle_factura (
                 PRIMARY KEY (id_detalle_factura)
 );
 
+
+ALTER TABLE tmp_detalle ADD CONSTRAINT tmp_factura_tmp_detalle_fk
+FOREIGN KEY (id_factura)
+REFERENCES tmp_factura (id_factura)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 
 ALTER TABLE tbl_facturacion ADD CONSTRAINT tbl_forma_pago_tbl_facturacion_fk
 FOREIGN KEY (id_forma_pago)
@@ -196,6 +225,12 @@ REFERENCES detalle_kardex (id_detalle_kardex)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
+ALTER TABLE tmp_detalle ADD CONSTRAINT detalle_kardex_tmp_detalle_fk
+FOREIGN KEY (id_detalle_kardex)
+REFERENCES detalle_kardex (id_detalle_kardex)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
 ALTER TABLE tbl_facturacion ADD CONSTRAINT tbl_clliente_tbl_facturacion_fk
 FOREIGN KEY (id_cliente)
 REFERENCES tbl_clliente (id_cliente)
@@ -207,3 +242,59 @@ FOREIGN KEY (id_facturacion)
 REFERENCES tbl_facturacion (id_facturacion)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
+
+delimter //
+ CREATE PROCEDURE factura(login int,usuario varchar(120),n_facturas varchar(120))
+BEGIN
+IF(login=0)THEN
+IF NOT EXISTS(SELECT * from tmp_factura where fecha_factura=curdate() and usuario_tmp=usuario and 
+DATE_FORMAT(hora_factura,"%H")>=01   and DATE_FORMAT(hora_factura,"%H")<=23)THEN
+INSERT into tmp_factura(id_factura,usuario_tmp, descuento_factura, fecha_factura, total_factura, iva_factura, hora_factura) VALUES(null,usuario,0,curdate(),0,0,CURTIME());
+end if;
+ELSE
+IF NOT EXISTS(SELECT * from tbl_facturacion where tbl_facturacion.fecha_factura=curdate() and tbl_facturacion.id_cliente=usuario and 
+DATE_FORMAT(tbl_facturacion.hora_factura,"%H")>=01   and DATE_FORMAT(tbl_facturacion.hora_factura,"%H")<=23)THEN
+INSERT into tbl_facturacion(tbl_facturacion.id_facturacion, tbl_facturacion.id_cliente,tbl_facturacion.descuento_factura,tbl_facturacion.fecha_factura,tbl_facturacion.total_factura, tbl_facturacion.iva_factura, tbl_facturacion.hora_factura,tbl_facturacion.n_factura) VALUES(null,usuario,0,curdate(),0,0,CURTIME(),n_facturas);
+end if;
+end if;
+END;
+
+
+//   delimiter ;
+
+
+DELIMITER $$
+CREATE PROCEDURE detalle_facturas(login int,id_detalle_kardexs int ,id_imagens int ,id_facturas int ,cantidads int ,precio_unitario_clientes double(10,2) )
+BEGIN
+DECLARE total double(10,2);
+set total=cantidads*precio_unitario_clientes;
+IF(login=0)THEN 
+if NOT EXISTS(SELECT * from tmp_detalle WHERE id_factura=id_facturas and id_imagen=id_imagens)then 
+INSERT into tmp_detalle(id_detalle,id_detalle_kardex,id_imagen,id_factura,cantidad,precio_unitario_cliente,precio_total_cliente) VALUES (null,id_detalle_kardexs,id_imagens,id_facturas,cantidads,precio_unitario_clientes,total);
+ELSE 
+UPDATE tmp_detalle SET cantidad=cantidad , precio_total_cliente=total where d_factura=id_facturas and id_imagen=id_imagens;
+END IF;
+
+ELSE
+if NOT EXISTS(SELECT * from detalle_factura WHERE id_factura=id_facturas and id_imagen=id_imagens)then 
+INSERT into detalle_factura(id_detalle,id_detalle_kardex,id_imagen,id_factura,cantidad,precio_unitario_cliente,precio_total_cliente) VALUES (null,id_detalle_kardexs,id_imagens,id_facturas,cantidads,precio_unitario_clientes,total);
+ELSE 
+UPDATE detalle_factura SET cantidad=cantidad , precio_total_cliente=total where d_factura=id_facturas and id_imagen=id_imagens;
+END IF;
+
+end if;
+END;
+$$ DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION cantidad_productos(login int,id_facturas int)RETURNS int
+BEGIN
+DECLARE total int;
+IF(login=0)then 
+SELECT COUNT(*) into total from tmp_detalle INNER JOIN tmp_factura on tmp_detalle.id_factura=tmp_factura.id_factura WHERE tmp_detalle.id_factura=id_facturas AND tmp_factura.fecha_factura=curdate()   and DATE_FORMAT(hora_factura,"%H")<=23;
+ELSE
+SELECT COUNT(*) into total from detalle_factura INNER JOIN tbl_facturacion on detalle_factura.id_factura=tbl_facturacion.id_facturacion WHERE tmp_detalle.id_factura=id_facturas and tbl_facturacion.fecha_factura=curdate() and DATE_FORMAT(hora_factura,"%H")<=23;
+end if;
+RETURN total;
+END;
+$$  DELIMITER ;

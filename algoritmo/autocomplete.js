@@ -15,7 +15,7 @@ var options = {
                         enabled: true
                 }
         }
-        ,theme: "dark"
+        ,theme: "boostrap"
 };
 
 $("#searchs").easyAutocomplete(options);

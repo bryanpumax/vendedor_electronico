@@ -18,7 +18,14 @@
                 <span class="nav-link-text">Inicio</span>
               </a>
             </li>
-            
+    <li class="nav-item">
+              <a class="nav-link active" href="">
+               <i class="fas fa-cart-plus text-primary"></i>
+                <span class="nav-link-text">Compra</span>
+<p class="p-2"></p>
+                <div class="p-1 rounded-pill border border-primary cantidad_producto">0</div>
+              </a>
+            </li>
              <li class="nav-item d-xl-none">
           
               <div class=" nav-link sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">

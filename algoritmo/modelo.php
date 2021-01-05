@@ -53,8 +53,9 @@ echo $html;
        $id_factura=factura($_GET["usuario"],$_GET["login"]);
 $id_imagen=$_GET["id_imagen"];
 $detalle=$_GET["detalle"];
-$cantidad_compra=detalle_carrito($id_factura,$id_imagen,$detalle,$_GET["login"]);
+$cantidad_compra=detalle_carrito($id_factura,$id_imagen,$detalle,$_GET["login"],$_GET["usuario"]);
 echo $cantidad_compra;
+ 
        break;
 
 }
@@ -71,7 +72,7 @@ echo $cantidad_compra;
 }
 
 
-function autocomplete($utl)
+function autocomplete($ut)
 {
  
 
@@ -165,22 +166,27 @@ function factura($usuario,$login)
 $n_factura=$consulta_factura->rowcount()+1;
 $n2_factura=generate_numbers($n_factura,1,10);
 $valor="$login,'$usuario','$n2_factura'";
-  $consulta= consultas("tmp_factura","*",'where fecha_factura=curdate() and usuario_tmp="'.$usuario.'" and 
+if ($login==0) {
+  $tabla="tmp_factura";
+  $campo_usuario="usuario_tmp";
+  $text_factura="id_factura";
+}else {
+  $tabla="tbl_facturacion";
+  $campo_usuario="  id_cliente ";
+  $text_factura="id_facturacion";
+}
+
+  $consulta= consultas("$tabla","*",'where fecha_factura=curdate() and '.$campo_usuario.'="'.$usuario.'" and 
 DATE_FORMAT(hora_factura,"%H")>=01   and DATE_FORMAT(hora_factura,"%H")<=23'); 
 $consulta2=$consulta->fetchAll(PDO::FETCH_ASSOC);
- if ($consulta->rowcount()==1) {
+  if ($consulta->rowcount()==0) {
     procedimiento("factura",$valor);
- } else {
-    procedimiento("factura",$valor);
- }
- 
-
-
-return $consulta2[0]["id_factura"];
+ }  
+return $consulta2[0]["$text_factura"];
 
  
 }
-function detalle_carrito($id_factura,$producto,$detalle,$login)
+function detalle_carrito($id_factura,$producto,$detalle,$login,$usuario)
 {
 
 $consulta_producto= consultas("detalle_kardex","detalle_kardex.precio_kardex as precio,tbl_producto.nombre_producto,tbl_imagen.id_imagen ","INNER JOIN tbl_imagen on tbl_imagen.id_detalle_kardex=detalle_kardex.id_detalle_kardex 
@@ -190,7 +196,7 @@ $consulta_producto2=$consulta_producto->fetchAll(PDO::FETCH_ASSOC);
 $pvp=$consulta_producto2[0]["precio"]+1;
 $valor="$login,$detalle,$producto,$id_factura,1,$pvp";
 procedimiento("detalle_facturas",$valor);
-$parametros="$login,$id_factura";
+$parametros="$login,$id_factura,'$usuario'";
    $funcion_cantidad_producto=otras("SELECT cantidad_productos($parametros) as cantidad");
    $funcion_cantidad_producto2=$funcion_cantidad_producto->fetchAll(PDO::FETCH_ASSOC);
    $cantidad=$funcion_cantidad_producto2[0]["cantidad"];

@@ -285,15 +285,15 @@ END IF;
 end if;
 END;
 $$ DELIMITER ;
-
+DROP FUNCTION cantidad_productos;
 DELIMITER $$
-CREATE FUNCTION cantidad_productos(login int,id_facturas int)RETURNS int
+CREATE FUNCTION cantidad_productos(login int,id_facturas int,usuario varchar(120))RETURNS int
 BEGIN
 DECLARE total int;
 IF(login=0)then 
-SELECT COUNT(*) into total from tmp_detalle INNER JOIN tmp_factura on tmp_detalle.id_factura=tmp_factura.id_factura WHERE tmp_detalle.id_factura=id_facturas AND tmp_factura.fecha_factura=curdate()   and DATE_FORMAT(hora_factura,"%H")<=23;
+SELECT COUNT(*) into total from tmp_detalle INNER JOIN tmp_factura on tmp_detalle.id_factura=tmp_factura.id_factura WHERE tmp_detalle.id_factura=id_facturas AND tmp_factura.fecha_factura=curdate()   and DATE_FORMAT(hora_factura,"%H")<=23 and tmp_factura.usuario_tmp=usuario;
 ELSE
-SELECT COUNT(*) into total from detalle_factura INNER JOIN tbl_facturacion on detalle_factura.id_factura=tbl_facturacion.id_facturacion WHERE tmp_detalle.id_factura=id_facturas and tbl_facturacion.fecha_factura=curdate() and DATE_FORMAT(hora_factura,"%H")<=23;
+SELECT COUNT(*) into total from detalle_factura INNER JOIN tbl_facturacion on detalle_factura.id_factura=tbl_facturacion.id_facturacion WHERE tmp_detalle.id_factura=id_facturas and tbl_facturacion.fecha_factura=curdate() and DATE_FORMAT(hora_factura,"%H")<=23 and tbl_facturacion.id_cliente=usuario;
 end if;
 RETURN total;
 END;

@@ -83,6 +83,27 @@ function seleccionar_color(usuario,id_imagen,detalle_kardex,login) {
         data: variable, 
         success: function (response) {
             $(".cantidad_producto").html(response)
+            console.log(response)
         }
     });
+}
+
+$(function () {
+    cargar_factura();
+});
+function cargar_factura() {
+
+  var variable="dato=nada";
+    
+     $.ajax({
+
+        type: "POST",  data: variable,
+        url: "http://localhost/vendedor_electronico/algoritmo/carga_menu.php",
+        
+        
+        success: function (response) {
+              $(".cantidad_producto").html(response)
+              console.log(response)
+        }
+    }); 
 }

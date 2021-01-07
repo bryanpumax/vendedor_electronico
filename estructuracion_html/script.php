@@ -23,3 +23,4 @@ $urls=url();?>
 <script src="<?=$urls?>assets/plugins/sweetalert/sweetalert2.9.js"> </script>
 <script src="<?=$urls?>assets/js/argon.js?v=1.2.0"> </script>
 <script src="<?=$urls?>assets/animacion/validacion_boostrap.js"> </script>
+<script src="<?=$urls?>assets/animacion/menu.js"> </script>

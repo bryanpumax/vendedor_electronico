@@ -19,11 +19,12 @@
               </a>
             </li>
     <li class="nav-item">
-              <a class="nav-link active" href="">
+              <a class="nav-link active" onclick="contenido('carrito/vista.html')">
                <i class="fas fa-cart-plus text-primary"></i>
                 <span class="nav-link-text">Compra</span>
 <p class="p-2"></p>
-                <div onload="cargar_factura()" class="p-1 rounded-pill border border-primary cantidad_producto">0</div>
+                <div onload="cargar_factura()" class="p-1 rounded-pill border border-primary "><div class="cantidad_producto"></div></div>
+                <div>$-></div>
               </a>
             </li>
              <li class="nav-item d-xl-none">

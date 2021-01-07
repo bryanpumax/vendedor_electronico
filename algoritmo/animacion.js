@@ -16,7 +16,7 @@ $("#buscar").click(function (e) {
                 '</tr></thead>' + response + '</table></div>';
 
             $(".vista").html(tabla)
-            existe_tabla()
+          
         }
     });
 
@@ -90,6 +90,7 @@ function seleccionar_color(usuario,id_imagen,detalle_kardex,login) {
 
 $(function () {
     cargar_factura();
+  existe_tabla()
 });
 function cargar_factura() {
 

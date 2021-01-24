@@ -6,12 +6,20 @@ $urls=url();
  
 switch ($dato) {
     case 'auto':
+    
      return autocomplete($urls);
         break;
  case 'detalle':
+ if (isset($_SESSION["usuario"])) {
+   $usuario_temporal=isset($_SESSION["id_usuario"]);
+   $login=1;
+}else{
+   $usuario_temporal=getenv('COMPUTERNAME');
+   $login=0;
+}
   $producto=$_GET["searchs"];
   $presupuesto=$_GET["presupuesto"];
-  $sql="";
+  $sql=""; factura($usuario_temporal,$login);
   if ($producto=="") {
       echo  json_encode("vacio");
   }else{
@@ -53,7 +61,12 @@ echo $html;
        $id_factura=factura($_GET["usuario"],$_GET["login"]);
 $id_imagen=$_GET["id_imagen"];
 $detalle=$_GET["detalle"];
+if ($id_factura!="x") {
 $cantidad_compra=detalle_carrito($id_factura,$id_imagen,$detalle,$_GET["login"],$_GET["usuario"]);
+}else {
+  $cantidad_compra="-";
+}
+
 echo $cantidad_compra;
  
        break;
@@ -178,11 +191,15 @@ if ($login==0) {
 
   $consulta= consultas("$tabla","*",'where fecha_factura=curdate() and '.$campo_usuario.'="'.$usuario.'" and 
 DATE_FORMAT(hora_factura,"%H")>=01   and DATE_FORMAT(hora_factura,"%H")<=23'); 
-$consulta2=$consulta->fetchAll(PDO::FETCH_ASSOC);
+
   if ($consulta->rowcount()==0) {
     procedimiento("factura",$valor);
- }  
-return $consulta2[0]["$text_factura"];
+    return "x";
+ }  else {
+   $consulta2=$consulta->fetchAll(PDO::FETCH_ASSOC);
+    return $consulta2[0]["$text_factura"];
+ }
+
 
  
 }
@@ -203,11 +220,4 @@ $parametros="$login,$id_factura,'$usuario'";
 return $cantidad;
 } 
  
-function generate_numbers($start, $count, $digits) {
- 
-   for ($n = $start; $n < $start + $count; $n++) {
-      $result  = str_pad($n, $digits, "0", STR_PAD_LEFT);
-   }
-   return $result;
-}
 

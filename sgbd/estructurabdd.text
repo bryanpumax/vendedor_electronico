@@ -1,4 +1,15 @@
 
+CREATE TABLE tbl_usuario (
+                id_usuario INT AUTO_INCREMENT NOT NULL,
+                usuario_usuario VARCHAR(120) NOT NULL,
+                pasword_usuario VARCHAR(120) NOT NULL,
+                nombre_usuario VARCHAR(120) NOT NULL,
+                apellido_usuario VARCHAR(120) NOT NULL,
+                rol_id INT NOT NULL,
+                rol VARCHAR(120) NOT NULL,
+                PRIMARY KEY (id_usuario)
+);
+ 
 CREATE TABLE tmp_factura (
                 id_factura INT AUTO_INCREMENT NOT NULL,
                 usuario_tmp VARCHAR(120) NOT NULL,
@@ -267,19 +278,23 @@ DELIMITER $$
 CREATE PROCEDURE detalle_facturas(login int,id_detalle_kardexs int ,id_imagens int ,id_facturas int ,cantidads int ,precio_unitario_clientes double(10,2) )
 BEGIN
 DECLARE total double(10,2);
+DECLARE totalf double(10,2);
+DECLARE resultado double(10,2);
 set total=cantidads*precio_unitario_clientes;
 IF(login=0)THEN 
 if NOT EXISTS(SELECT * from tmp_detalle WHERE id_factura=id_facturas and id_imagen=id_imagens)then 
 INSERT into tmp_detalle(id_detalle,id_detalle_kardex,id_imagen,id_factura,cantidad,precio_unitario_cliente,precio_total_cliente) VALUES (null,id_detalle_kardexs,id_imagens,id_facturas,cantidads,precio_unitario_clientes,total);
 ELSE 
-UPDATE tmp_detalle SET cantidad=cantidad , precio_total_cliente=total where d_factura=id_facturas and id_imagen=id_imagens;
+UPDATE tmp_detalle SET cantidad=cantidads , precio_total_cliente=total where id_factura=id_facturas and id_imagen=id_imagens;
+ 
 END IF;
 
 ELSE
 if NOT EXISTS(SELECT * from detalle_factura WHERE id_factura=id_facturas and id_imagen=id_imagens)then 
 INSERT into detalle_factura(id_detalle,id_detalle_kardex,id_imagen,id_factura,cantidad,precio_unitario_cliente,precio_total_cliente) VALUES (null,id_detalle_kardexs,id_imagens,id_facturas,cantidads,precio_unitario_clientes,total);
 ELSE 
-UPDATE detalle_factura SET cantidad=cantidad , precio_total_cliente=total where d_factura=id_facturas and id_imagen=id_imagens;
+UPDATE detalle_factura SET cantidad=cantidads , precio_total_cliente=total where id_facturacion=id_facturas and id_imagen=id_imagens;
+ 
 END IF;
 
 end if;

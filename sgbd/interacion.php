@@ -46,3 +46,11 @@ $sentecia=$texto_condicion;
  $sql = $pdo->query($sentecia);
 return $sql;
 }
+/* funciones que pasa en todos lados */
+function generate_numbers($start, $count, $digits) {
+ 
+   for ($n = $start; $n < $start + $count; $n++) {
+      $result  = str_pad($n, $digits, "0", STR_PAD_LEFT);
+   }
+   return $result;
+}

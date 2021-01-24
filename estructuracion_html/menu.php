@@ -4,7 +4,7 @@
       <!-- Brand -->
       <div class="sidenav-header  align-items-center">
         <a class="navbar-brand" href="javascript:void(0)">
-          <img src="http://localhost/vendedor_electronico/assets/imagen/logo.png" class="navbar-brand-img" alt="...">
+          <img src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/imagen/logo.png" class="navbar-brand-img" alt="...">
         </a>
       </div>
       <div class="navbar-inner">

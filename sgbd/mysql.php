@@ -1,8 +1,8 @@
 <?php 
-     $usuario="vendedor";
+     $usuario="lab_vendedo";
     $password="electronico"; 
     $serve="localhost";
-    $bdd="vendedor";
+    $bdd="lab_vendedo";
     $puerto="";
 try{$pdo = new PDO(   "mysql:host=$serve;dbname=$bdd;charset=utf8",$usuario, $password,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 

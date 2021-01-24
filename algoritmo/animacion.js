@@ -7,7 +7,7 @@ $("#buscar").click(function (e) {
     var variable = "dato=detalle&searchs=" + searchs + "&presupuesto=" + presupuesto;
     $.ajax({
         type: "GET",
-        url: "http://localhost/vendedor_electronico/algoritmo/modelo.php",
+        url: "https://lab-mrtecks.com/app_php/vendedor_electronico/algoritmo/modelo.php",
         data: variable,
         success: function (response) {
 
@@ -16,7 +16,7 @@ $("#buscar").click(function (e) {
                 '</tr></thead>' + response + '</table></div>';
 
             $(".vista").html(tabla)
-          
+          existe_tabla();
         }
     });
 
@@ -48,7 +48,7 @@ function color_proveedor_producto(id_detalle_kardex) {
     /* titulo */
     $.ajax({
         type: "GET",
-        url: "http://localhost/vendedor_electronico/algoritmo/modelo.php",
+        url: "https://lab-mrtecks.com/app_php/vendedor_electronico/algoritmo/modelo.php",
 
         data: variable, 
         success: function (response) {
@@ -59,7 +59,7 @@ function color_proveedor_producto(id_detalle_kardex) {
 var variable = "dato=modal&detalle_kardex=" + id_detalle_kardex+"&componente=cuerpo";
 $.ajax({
         type: "GET",
-        url: "http://localhost/vendedor_electronico/algoritmo/modelo.php",
+        url: "https://lab-mrtecks.com/app_php/vendedor_electronico/algoritmo/modelo.php",
 
         data: variable, 
         success: function (response) {
@@ -79,18 +79,18 @@ function seleccionar_color(usuario,id_imagen,detalle_kardex,login) {
     var variable="dato=carrito&usuario="+usuario+"&id_imagen="+id_imagen+"&detalle="+detalle_kardex+"&login="+login;
     $.ajax({
         type: "GET",
-     url: "http://localhost/vendedor_electronico/algoritmo/modelo.php",
+     url: "https://lab-mrtecks.com/app_php/vendedor_electronico/algoritmo/modelo.php",
         data: variable, 
         success: function (response) {
             $(".cantidad_producto").html(response)
-            console.log(response)
+           
         }
     });
 }
 
 $(function () {
     cargar_factura();
-  existe_tabla()
+ 
 });
 function cargar_factura() {
 
@@ -99,12 +99,12 @@ function cargar_factura() {
      $.ajax({
 
         type: "POST",  data: variable,
-        url: "http://localhost/vendedor_electronico/algoritmo/carga_menu.php",
+        url: "https://lab-mrtecks.com/app_php/vendedor_electronico/algoritmo/carga_menu.php",
         
         
         success: function (response) {
               $(".cantidad_producto").html(response)
-              console.log(response)
+         
         }
     }); 
 }

@@ -1,5 +1,10 @@
-<?php  include("http://localhost/vendedor_electronico/estructuracion_html/head_inicio.php");
-include("http://localhost/vendedor_electronico/estructuracion_html/menu.php");
+<?php 
+  $ruta_head_inicio=$_SERVER["DOCUMENT_ROOT"]."/app_php/vendedor_electronico/estructuracion_html/head_inicio.php";
+  $ruta_menu=$_SERVER["DOCUMENT_ROOT"]."/app_php/vendedor_electronico/estructuracion_html/menu.php";
+ 
+ include $ruta_head_inicio;
+   
+ include $ruta_menu;
  
 ?>
 
@@ -16,8 +21,8 @@ date_default_timezone_set('America/Guayaquil');
                     echo "Servidor esta haciendo su respaldo tienes  acceso  compras";
                     } else {
                     
-                       $página_inicio = file_get_contents('http://localhost/vendedor_electronico/algoritmo/buscarbdd.php');
-echo $página_inicio;
+                  $página_inicio = file_get_contents($_SERVER["DOCUMENT_ROOT"].'/app_php/vendedor_electronico/algoritmo/buscarbdd.php');
+echo $página_inicio;  
                     }
                     
                        ?>
@@ -55,4 +60,6 @@ echo $página_inicio;
         </div>
 
 
-        <?php include("http://localhost/vendedor_electronico/estructuracion_html/head_final.php");?>
+        <?php 
+        $ruta_head_final=$_SERVER["DOCUMENT_ROOT"]."/app_php/vendedor_electronico/estructuracion_html/head_final.php";
+        include $ruta_head_final;?>

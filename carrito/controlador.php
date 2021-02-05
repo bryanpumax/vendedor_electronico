@@ -56,7 +56,7 @@ function eliminar($id_imagens,$id_factura)
 }
  
  function comprar()
- {                  $página_inicio = file_get_contents('http://localhost/vendedor_electronico/carrito/formulario.php');
+ {                  $página_inicio = file_get_contents('https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/formulario.php');
  return $página_inicio;
  }
 

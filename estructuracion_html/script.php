@@ -15,3 +15,4 @@ include $ruta;?>
 <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/js/argon.js?v=1.2.0"> </script>
 <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/animacion/validacion_boostrap.js"> </script>
 <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/animacion/menu.js"> </script>
+<script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/animacion/div-vista.js"> </script>

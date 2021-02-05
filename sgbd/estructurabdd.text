@@ -1,4 +1,5 @@
 
+
 CREATE TABLE tbl_usuario (
                 id_usuario INT AUTO_INCREMENT NOT NULL,
                 usuario_usuario VARCHAR(120) NOT NULL,
@@ -9,7 +10,8 @@ CREATE TABLE tbl_usuario (
                 rol VARCHAR(120) NOT NULL,
                 PRIMARY KEY (id_usuario)
 );
- 
+
+
 CREATE TABLE tmp_factura (
                 id_factura INT AUTO_INCREMENT NOT NULL,
                 usuario_tmp VARCHAR(120) NOT NULL,
@@ -108,8 +110,9 @@ CREATE TABLE detalle_kardex (
 
 CREATE TABLE tmp_detalle (
                 id_detalle INT AUTO_INCREMENT NOT NULL,
-                id_detalle_kardex INT NOT NULL,
                 id_factura INT NOT NULL,
+                id_detalle_kardex INT NOT NULL,
+                id_imagen INT NOT NULL,
                 cantidad INT NOT NULL,
                 precio_unitario_cliente DECIMAL(10,2) NOT NULL,
                 precio_total_cliente DECIMAL(10,2) NOT NULL,
@@ -135,6 +138,7 @@ CREATE TABLE tbl_clliente (
                 correo_cliente VARCHAR(220) NOT NULL,
                 id_parroquia INT NOT NULL,
                 direccion_cliente VARCHAR(120) NOT NULL,
+                nombre_equipo VARCHAR(120) NOT NULL,
                 PRIMARY KEY (id_cliente)
 );
 
@@ -157,6 +161,7 @@ CREATE TABLE detalle_factura (
                 id_detalle_factura INT AUTO_INCREMENT NOT NULL,
                 id_facturacion INT NOT NULL,
                 id_detalle_kardex INT NOT NULL,
+                id_imagen INT NOT NULL,
                 cantidad_cliente INT NOT NULL,
                 precio_unitario_cliente DECIMAL(10,2) NOT NULL,
                 precio_total_cliente DECIMAL(10,2) NOT NULL,
@@ -253,10 +258,15 @@ FOREIGN KEY (id_facturacion)
 REFERENCES tbl_facturacion (id_facturacion)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
+ 
 
-delimter //
+DELIMITER $$
  CREATE PROCEDURE factura(login int,usuario varchar(120),n_facturas varchar(120))
 BEGIN
+DECLARE total decimal(10,2);
+declare iva decimal(10,2);
+declare hora time;
+DECLARE id int;
 IF(login=0)THEN
 IF NOT EXISTS(SELECT * from tmp_factura where fecha_factura=curdate() and usuario_tmp=usuario and 
 DATE_FORMAT(hora_factura,"%H")>=01   and DATE_FORMAT(hora_factura,"%H")<=23)THEN
@@ -266,14 +276,13 @@ ELSE
 IF NOT EXISTS(SELECT * from tbl_facturacion where tbl_facturacion.fecha_factura=curdate() and tbl_facturacion.id_cliente=usuario and 
 DATE_FORMAT(tbl_facturacion.hora_factura,"%H")>=01   and DATE_FORMAT(tbl_facturacion.hora_factura,"%H")<=23)THEN
 INSERT into tbl_facturacion(tbl_facturacion.id_facturacion, tbl_facturacion.id_cliente,tbl_facturacion.descuento_factura,tbl_facturacion.fecha_factura,tbl_facturacion.total_factura, tbl_facturacion.iva_factura, tbl_facturacion.hora_factura,tbl_facturacion.n_factura) VALUES(null,usuario,0,curdate(),0,0,CURTIME(),n_facturas);
+ 
 end if;
 end if;
 END;
 
 
-//   delimiter ;
-
-
+$$ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE detalle_facturas(login int,id_detalle_kardexs int ,id_imagens int ,id_facturas int ,cantidads int ,precio_unitario_clientes double(10,2) )
 BEGIN
@@ -313,3 +322,47 @@ end if;
 RETURN total;
 END;
 $$  DELIMITER ;
+
+
+DELIMITER
+    $$
+CREATE PROCEDURE insertar_cliente(
+    login INT,
+    cedula_clientes VARCHAR(10),
+    nombre_clientes VARCHAR(120),
+    apellido_clientes VARCHAR(120),
+    telefono_clientes VARCHAR(10),
+    correo_clientes VARCHAR(120),
+    id_parroquias int ,
+    direccion_clientes VARCHAR(120),usuario_usuarios varchar(120),pasword_usuarios varchar(120))
+BEGIN
+IF(login=0)then 
+IF NOT EXISTS(SELECT * FROM tbl_clliente INNER JOIN tbl_usuario on tbl_usuario.cedula_usuario=tbl_clliente.cedula_cliente  WHERE cedula_cliente=cedula_clientes)THEN
+INSERT into tbl_clliente(id_cliente,cedula_cliente,nombre_cliente,apellido_cliente,telefono_cliente,correo_cliente,id_parroquia,direccion_cliente)VALUES(null,cedula_clientes,nombre_clientes,apellido_clientes,telefono_clientes,correo_clientes,id_parroquias,direccion_clientes);
+
+        INSERT into tbl_usuario(id_usuario,usuario_usuario,pasword_usuario,nombre_usuario,apellido_usuario,cedula_usuario,rol_id,rol)VALUES(null,usuario_usuarios,md5(pasword_usuarios),nombre_clientes,apellido_clientes,cedula_clientes,1,"cliente");
+END if;
+
+
+end if;
+    END
+        ; $$
+    DELIMITER
+        ;
+DELIMITER $$
+CREATE PROCEDURE factura_eliminacion_tmp(id_facturas int,n_facturas varchar(10),id_clientes int ,iva_facturas decimal(10,2),total_facturas decimal(10,2),hora_facturas time,id_forma_pagos int,estado_facturacions varchar(120) )
+BEGIN
+DECLARE id int;
+IF EXISTS(SELECT * from tmp_factura where tmp_factura.id_factura=id_facturas)then 
+INSERT into tbl_facturacion (id_facturacion,n_factura,id_cliente,iva_factura,total_factura,descuento_factura,fecha_factura,hora_factura,id_forma_pago,estado_facturacion)VALUES(null,n_facturas,id_clientes,iva_facturas,total_facturas,0,curdate(),hora_facturas,id_forma_pagos,estado_facturacions);
+SELECT id_facturacion into id 
+from tbl_facturacion where tbl_facturacion.id_cliente=id_clientes and tbl_facturacion.fecha_factura=curdate() and tbl_facturacion.hora_factura=hora_facturas;
+INSERT into detalle_factura(id_detalle_factura,id_facturacion,id_detalle_kardex,id_imagen,cantidad_cliente,precio_unitario_cliente,precio_total_cliente)
+SELECT null,id,tmp_detalle.id_detalle_kardex,tmp_detalle.id_imagen,tmp_detalle.cantidad,tmp_detalle.precio_unitario_cliente,tmp_detalle.precio_total_cliente FROM tmp_detalle where tmp_detalle.id_factura=id_facturas;
+ 
+DELETE FROM tmp_detalle where tmp_detalle.id_factura=id_facturas;
+DELETE FROM tmp_factura WHERE tmp_factura.id_factura=id_facturas;
+
+end if;
+END
+$$ DELIMITER ;

@@ -4,10 +4,12 @@ function detalle_factura($id_factura)
 {
 /* SELECT * FROM `tmp_detalle` where id_factura=63 */
 if (isset($_SESSION["usuario"])) {
-   $usuario=isset($_SESSION["id_usuario"]);
+   $usuario=isset($_SESSION["cedula"]);
    $login=1;
 }else{
-   $usuario=getenv('COMPUTERNAME');
+$user_agent = $_SERVER['HTTP_USER_AGENT']; 
+$SO = getPlatform($user_agent);
+   $usuario=$SO;
    $login=0;
 }
 if ($login==0) {
@@ -33,7 +35,7 @@ if ($login==0) {
   $suma=0;
   $html=' 
 <table class="table">
-     <thead><tr ><td >Producto</td>
+     <thead><tr ><td class="" >Producto</td>
      <td>Cantidad</td>
      <td>Precio</td>
      <td>Total</td>
@@ -44,10 +46,10 @@ if ($login==0) {
     $html.='  <tr>
 <td >
 <div class="row">
-<div class="col-sm"><img style="height: 100px;width: 100px;object-fit: fill;"
+<div class=""><img style="height: 100px;width: 100px;object-fit: fill;"
  src="'.$row["ruta"].'" alt="'.$row["nombre_producto"].' '.$row["color"].'"> </div>
 
-                        <div class="col-sm datos_informacion text-center">
+                        <div class="offset-md-2 datos_informacion text-center">
                         <div class="row">'.$row["nombre_producto"].'</div>
                         <div class="row">'.$row["marca_producto"].'</div>
                         <div class="row">'.$row["color"].'</div>
@@ -94,13 +96,15 @@ $login="";
 $tabla="";
 $campo_usuario="";
 $text_factura="";
-  if (isset($_SESSION["usuario"])) {
-   $usuario=isset($_SESSION["id_usuario"]);
+if (isset($_SESSION["usuario"])) {
+   $usuario=isset($_SESSION["cedula"]);
    $login=1;
 }else{
-   $usuario=getenv('COMPUTERNAME');
+$user_agent = $_SERVER['HTTP_USER_AGENT']; 
+$SO = getPlatform($user_agent);
+   $usuario=$SO;
    $login=0;
-}  
+}
 
 if ($login==0) {
   $tabla="tmp_factura";
@@ -130,13 +134,15 @@ $login="";
 $tabla="";
 $campo_usuario="";
 $text_factura="";
-  if (isset($_SESSION["usuario"])) {
-   $usuario=isset($_SESSION["id_usuario"]);
+ if (isset($_SESSION["usuario"])) {
+   $usuario=isset($_SESSION["cedula"]);
    $login=1;
 }else{
-   $usuario=getenv('COMPUTERNAME');
+$user_agent = $_SERVER['HTTP_USER_AGENT']; 
+$SO = getPlatform($user_agent);
+   $usuario=$SO;
    $login=0;
-}  
+}
   $valor="$login,$detalle,$producto,$id_factura,$cantidad,$pvp";
 procedimiento("detalle_facturas",$valor);
 if ($login==0) {
@@ -163,13 +169,15 @@ $login="";
 $tabla="";
 $campo_usuario="";
 $text_factura="";
-  if (isset($_SESSION["usuario"])) {
-   $usuario=isset($_SESSION["id_usuario"]);
+ if (isset($_SESSION["usuario"])) {
+   $usuario=isset($_SESSION["cedula"]);
    $login=1;
 }else{
-   $usuario=getenv('COMPUTERNAME');
+$user_agent = $_SERVER['HTTP_USER_AGENT']; 
+$SO = getPlatform($user_agent);
+   $usuario=$SO;
    $login=0;
-}  
+} 
   
 
 if ($login==0) {
@@ -229,13 +237,15 @@ $login="";
 $tabla="";
 $campo_usuario="";
 $text_factura="";
-  if (isset($_SESSION["usuario"])) {
-   $usuario=isset($_SESSION["id_usuario"]);
+if (isset($_SESSION["usuario"])) {
+   $usuario=isset($_SESSION["cedula"]);
    $login=1;
 }else{
-   $usuario=getenv('COMPUTERNAME');
+$user_agent = $_SERVER['HTTP_USER_AGENT']; 
+$SO = getPlatform($user_agent);
+   $usuario=$SO;
    $login=0;
-}  
+}
 
 if ($login==0) {
   $tabla="tmp_factura";
@@ -259,14 +269,20 @@ $n2_factura=generate_numbers($n_factura,1,10);
   
     $id_factura=$consulta2[0]["$text_factura"];  
     $suma=0;
+    $hora="";
+    $id="";
     while ($row=$consultaop->fetch()) {
   $suma=$row["precio_total_cliente"]+$suma;
+  $hora=$row["hora_factura"];
+  $id=$row[$text_factura];
     }
     $iva=$suma*0.12;
     $total=$iva+$suma;
     $valor="iva_factura=$iva,total_factura=$total";
     update($tabla,$valor,"$text_factura=$id_factura");
-  $html=' <h5 class="card-title">Factura '.$n2_factura.'</h5>
+  $html=' <h5 class="card-title">Factura '.$n2_factura.' <input type="hidden" value="'.$n2_factura.'" name="n2_factura" id="n2_factura">
+  <input type="hidden" name="id" id="id" value="'.$id.'">
+  </h5>
                                                         <p class="card-text">
                                                         <div class="row">
                                                                 <div class="col">SubTotal</div>
@@ -276,13 +292,17 @@ $n2_factura=generate_numbers($n_factura,1,10);
 
                                                         <div class="row">
                                                                 <div class="col">Iva 12%</div>
-                                                                <div class="col">$'.$iva.'
+                                                                <div class="col">$'.$iva.' 
+                                                                <input type="hidden"  value="'.$iva.'" name="iva_factura" id="iva_factura">
                                                                 </div>
                                                         </div>
 
                                                         <div class="row">
                                                                 <div class="col">Total</div>
                                                                 <div class="col">$'.$total.'
+                                                                <input type="hidden" value="'.$total.'" name="total_factura" id="total_factura">
+                                                                 <input type="hidden"  value="0" name="descuento_factura" id="descuento_factura">
+                                                                 <input type="hidden"  value="'.$hora.'" name="hora_factura" id="hora_factura">
                                                                 </div>
                                                         </div>
                                                         </p>';

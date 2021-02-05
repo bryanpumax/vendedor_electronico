@@ -126,10 +126,10 @@
                                                 <div class="card-body">
                                                         <h5 class="card-title">Pago</h5>
                                                         <p class="card-text"> <select class="form-control" name="tipo_pago" id="tipo_pago">
-                                                                        <option value="efectivo">Efectivo</option>
-                                                                        <option value="Pinchicha">Pinchicha</option>
-                                                                        <option value="bolivariano">Bolivariano</option>
-                                                                        <option value="jep">Cooperativa Jep</option>
+                                                                        <option value="1">Efectivo</option>
+                                                                        <option value="2">Pinchicha</option>
+                                                                        <option value="3">Bolivariano</option>
+                                                                        <option value="4">Cooperativa Jep</option>
 
                                                                 </select></p>
 
@@ -178,4 +178,4 @@
                 <input type="text" name="numero_pg" id="numero_pg" value="1">
         </div>
 </form>
-<script src="http://localhost/vendedor_electronico/carrito/formulario.js"></script>
+<script src="https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/formulario.js"></script>

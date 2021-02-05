@@ -11,11 +11,9 @@ $("#buscar").click(function (e) {
         data: variable,
         success: function (response) {
 
-            var tabla = '<div class="table-responsive"><table class="table caption-top"> ';
-            tabla += '<thead><tr><th scope="col">Producto</th><th scope="col">Marca</th><th scope="col">Serie</th><th scope="col">Precio</th><th scope="col">Imagen</th><th scope="col">Accion</th>' +
-                '</tr></thead>' + response + '</table></div>';
+          
 
-            $(".vista").html(tabla)
+            $(".vista").html(response)
           existe_tabla();
         }
     });
@@ -25,6 +23,7 @@ $("#buscar").click(function (e) {
 
 function existe_tabla() {
     $(".table").DataTable({
+     responsive: true,
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
         },

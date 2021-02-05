@@ -1,6 +1,5 @@
 $(function () {
   cargar_producto();
-
 });
 var valor_constante = 1;
 var resultado;
@@ -51,7 +50,7 @@ function cargar_producto() {
   var variable = "dato=carga"
   $.ajax({
     type: "POST",
-    url: "http://localhost/vendedor_electronico/carrito/controlador.php",
+    url: "https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/controlador.php",
     data: variable,
 
     success: function (response) {
@@ -65,7 +64,7 @@ function cargar_producto() {
 
 function existe_tablas() {
   $(".table").DataTable({
-    dom: 'Bfrtip',
+      responsive: true,dom: 'Bfrtip',
     "language": {
       "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
     }, buttons: [
@@ -75,7 +74,7 @@ function existe_tablas() {
           var variable = "dato=comprar"
           $.ajax({
             type: "POST",
-            url: "http://localhost/vendedor_electronico/carrito/controlador.php",
+            url: "https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/controlador.php",
             data: variable,
 
             success: function (response) {
@@ -87,6 +86,7 @@ function existe_tablas() {
       }
     ]
   });
+
 }
 
 function eliminar(id_detalle,id_imagens,id_facturas) {
@@ -99,7 +99,7 @@ function accion_tabla_detalle_factura(accion, id_detalle,id_imagens,id_facturas,
 
   $.ajax({
     type: "POST",
-    url: "http://localhost/vendedor_electronico/carrito/controlador.php",
+    url: "https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/controlador.php",
     data: variable,
 
     success: function (response) {

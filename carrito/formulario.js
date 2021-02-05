@@ -58,7 +58,7 @@ function cargar_provincia() {
   var variable = "dato=provincia"
         $.ajax({
                 type: "POST",
-                url: "http://localhost/vendedor_electronico/carrito/controlador.php",
+                url: "https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/controlador.php",
                 data: variable, 
                 success: function (response) {
                         $("#provincia").html(response)
@@ -71,7 +71,7 @@ $("#provincia").change(function (e) {
   var variable = "dato=canton&provincia="+$(this).val()
   $.ajax({
                 type: "POST",
-                url: "http://localhost/vendedor_electronico/carrito/controlador.php",
+                url: "https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/controlador.php",
                 data: variable, 
                 success: function (response) {
                         $("#canton").html(response)
@@ -84,7 +84,7 @@ $("#canton").change(function (e) {
   var variable = "dato=parroquia&canton="+$(this).val()+"&provincia="+$("#provincia").val()
   $.ajax({
                 type: "POST",
-                url: "http://localhost/vendedor_electronico/carrito/controlador.php",
+                url: "https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/controlador.php",
                 data: variable, 
                 success: function (response) {
                         $("#parroquia").html(response)
@@ -109,7 +109,7 @@ function carga_datos_facturacion() {
     var variable = "dato=carga_datos_facturacion"
    $.ajax({
            type: "POST",
-         url: "http://localhost/vendedor_electronico/carrito/controlador.php",
+         url: "https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/controlador.php",
                 data: variable, 
            success: function (response) {
                 $(".contenido-factura") .html(response)        

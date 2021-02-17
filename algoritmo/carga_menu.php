@@ -6,14 +6,18 @@ $login="";
 $tabla="";
 $campo_usuario="";
 $text_factura="";
-if (isset($_SESSION["usuario"])) {
-   $usuario=isset($_SESSION["cedula"]);
+$cantidad="";
+ 
+if (isset($_SESSION["cedula"])) {
+   $usuario=($_SESSION["id_cliente"]);
    $login=1;
+ 
 }else{
 $user_agent = $_SERVER['HTTP_USER_AGENT']; 
 $SO = getPlatform($user_agent);
    $usuario=$SO;
    $login=0;
+ 
 }
 
 if ($login==0) {
@@ -22,12 +26,12 @@ if ($login==0) {
   $text_factura="id_factura";
 }else {
   $tabla="tbl_facturacion";
-  $campo_usuario="  id_cliente ";
+  $campo_usuario="estado_facturacion='Nueva' and  id_cliente";
   $text_factura="id_facturacion";
 }
   $consulta= consultas("$tabla","*",'where fecha_factura=curdate() and '.$campo_usuario.'="'.$usuario.'" and 
 DATE_FORMAT(hora_factura,"%H")>=01   and DATE_FORMAT(hora_factura,"%H")<=23 '); 
-  $consulta2=$consulta->fetchAll(PDO::FETCH_ASSOC);
+   $consulta2=$consulta->fetchAll(PDO::FETCH_ASSOC);
   if ($consulta->rowcount()>0) {
 $id_factura=$consulta2[0]["$text_factura"];
 $parametros="$login,$id_factura,'$usuario'";
@@ -37,5 +41,5 @@ $parametros="$login,$id_factura,'$usuario'";
   }
 else {
   $cantidad="-";
-}
-echo  $cantidad;
+}   
+echo $cantidad; 

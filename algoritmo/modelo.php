@@ -10,8 +10,8 @@ switch ($dato) {
      return autocomplete();
         break;
  case 'detalle':
- if (isset($_SESSION["usuario"])) {
-   $usuario_temporal=isset($_SESSION["cedula"]);
+ if (isset($_SESSION["cedula"])) {
+   $usuario_temporal=($_SESSION["id_cliente"]);
    $login=1;
 }else{
 $user_agent = $_SERVER['HTTP_USER_AGENT']; 
@@ -92,8 +92,11 @@ echo  json_encode($row);
 }
  function div_contenido_vista()
  {
-  if (isset($_SESSION["usuario"])) {
-   $usuario_temporal=isset($_SESSION["cedula"]);
+ $usuario_temporal="";
+ $login="";
+ 
+  if (isset($_SESSION["cedula"])) {
+   $usuario_temporal=($_SESSION["id_cliente"]);
    $login=1;
 }else{
 $user_agent = $_SERVER['HTTP_USER_AGENT']; 
@@ -101,11 +104,12 @@ $SO = getPlatform($user_agent);
    $usuario_temporal=$SO;
    $login=0;
 }
-   factura($usuario_temporal,$login);
+ 
+   $eje=factura($usuario_temporal,$login);
   
    $sql=consultas("tbl_producto,tbl_imagen,detalle_kardex","*","where tbl_imagen.id_detalle_kardex=detalle_kardex.id_detalle_kardex and detalle_kardex.id_producto=tbl_producto.id_producto  group by id_proveedor");
   
-      $html = '<div class="table-responsive"><table class="table caption-top table-bordered">
+      $html ='<div class="table-responsive"><table class="table caption-top table-bordered">
        <thead><tr><th >Producto</th>
       <th  class="">Marca</th>
       <th  class="">Serie</th>
@@ -155,8 +159,9 @@ return $sql->rowcount();
 function imagens_modal( $id_producto,$id_proveedor,$limite){
  
   $sql=consultas("tbl_imagen ,detalle_kardex","*","where tbl_imagen.id_detalle_kardex=detalle_kardex.id_detalle_kardex and detalle_kardex.id_producto=$id_producto and detalle_kardex.id_proveedor=$id_proveedor limit $limite");
-    if (isset($_SESSION["usuario"])) {
-   $usuario_temporal=isset($_SESSION["cedula"]);
+   $usuario_temporal="";
+    if (isset($_SESSION["cedula"])) {
+   $usuario_temporal=($_SESSION["id_cliente"]);
    $login=1;
 }else{
 $user_agent = $_SERVER['HTTP_USER_AGENT']; 
@@ -179,10 +184,10 @@ $html.='<div class="row">';
  
 if ($fila<$limite) {
 
-  $html.='<div onclick="seleccionar_color(\''.$usuario_temporal.'\',\''.$row["id_imagen"].'\','.$row["id_detalle_kardex"].','.$login.')" class="card text-center col-sm-4  "  >';
+  $html.='<div onclick="seleccionar_color(\''.$usuario_temporal.'\',\''.$row["id_imagen"].'\',\''.$row["id_detalle_kardex"].'\',\''.$login.'\')" class="card text-center col-sm-4  style="width: 20em;"  >';
 }
 if ($fila==$limite) {
-  $html.='<div onclick="seleccionar_color(\''.$usuario_temporal.'\',\''.$row["id_imagen"].'\','.$row["id_detalle_kardex"].','.$login.')" class="card col-sm-5 " >';
+  $html.='<div onclick="seleccionar_color(\''.$usuario_temporal.'\',\''.$row["id_imagen"].'\','.$row["id_detalle_kardex"].','.$login.')" class="card col-sm-5 text-center " style="width: 20em;" >';
 }
   $html.='
      <img class="card-img-top" style="height: 100px;width: 100px;object-fit: fill;"  src="'.$row['ruta'].'" alt="Card image cap">
@@ -208,32 +213,33 @@ return $html;
 
 function factura($usuario,$login)
 {
-  $consulta_factura= consultas("tbl_facturacion","*",''); 
-$n_factura=$consulta_factura->rowcount()+1;
-$n2_factura=generate_numbers($n_factura,1,10);
+  $consulta_factura= consultas("tbl_facturacion","*",' ORDER BY n_factura DESC LIMIT 1'); 
+$n_facturas=$consulta_factura->fetch();
+$n_factura=$n_facturas["n_factura"]+1;
+
+ $n2_factura=generate_numbers($n_factura,1,10); 
 $valor="$login,'$usuario','$n2_factura'";
+
 if ($login==0) {
   $tabla="tmp_factura";
   $campo_usuario="usuario_tmp";
   $text_factura="id_factura";
 }else {
   $tabla="tbl_facturacion";
-  $campo_usuario="  id_cliente ";
+  $campo_usuario='estado_facturacion!="Verificacion" and   id_cliente ';
   $text_factura="id_facturacion";
 }
 
-  $consulta= consultas("$tabla","*",'where fecha_factura=curdate() and '.$campo_usuario.'="'.$usuario.'" and 
+  $consulta= consultas("$tabla","*",'where fecha_factura=curdate() and  '.$campo_usuario.'="'.$usuario.'" and 
 DATE_FORMAT(hora_factura,"%H")>=01   and DATE_FORMAT(hora_factura,"%H")<=23'); 
-
-  if ($consulta->rowcount()==0) {
+ 
+    if ($consulta->rowcount()==0) {
     procedimiento("factura",$valor);
     return "x";
  }  else {
    $consulta2=$consulta->fetchAll(PDO::FETCH_ASSOC);
     return $consulta2[0]["$text_factura"];
- }
-
-
+ }  
  
 }
 function detalle_carrito($id_factura,$producto,$detalle,$login,$usuario)
@@ -244,13 +250,14 @@ INNER JOIN tbl_producto on tbl_producto.id_producto=detalle_kardex.id_producto
 where tbl_imagen.id_imagen=$producto"); 
 $consulta_producto2=$consulta_producto->fetchAll(PDO::FETCH_ASSOC);
 $pvp=$consulta_producto2[0]["precio"]+1;
-$valor="$login,$detalle,$producto,$id_factura,1,$pvp";
+$valor="$login,$detalle,$producto,$id_factura,1,$pvp"; 
   procedimiento("detalle_facturas",$valor);
-$parametros="$login,$id_factura,'$usuario'";
+ $parametros="$login,$id_factura,'$usuario'";
    $funcion_cantidad_producto=otras("SELECT cantidad_productos($parametros) as cantidad");
    $funcion_cantidad_producto2=$funcion_cantidad_producto->fetchAll(PDO::FETCH_ASSOC);
    $cantidad=$funcion_cantidad_producto2[0]["cantidad"];
-return $cantidad;
+ return $cantidad;  
+ 
 } 
  
 

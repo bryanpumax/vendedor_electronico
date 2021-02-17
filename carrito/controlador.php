@@ -4,6 +4,12 @@ include("modelo.php");
 $dato=$_REQUEST["dato"];
 
 switch ($dato) {
+case 'cedula':
+        echo usuario_existente($_REQUEST["cedula"]);
+        break;
+case 'seguimiento':
+        echo controlador_seguimiento();
+        break;
 case 'carga_datos_facturacion':
      echo carga_datos_facturacion();
         break;
@@ -76,3 +82,13 @@ function eliminar($id_imagens,$id_factura)
  {
   return md_carga_datos_facturacion();
  }
+ function controlador_seguimiento()
+ {
+         return seguimiento();
+ }
+function usuario_existente( $cedula)
+{
+        # code...
+        return usuario_existente_modelo($cedula);
+            
+}

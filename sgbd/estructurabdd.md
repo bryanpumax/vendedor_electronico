@@ -3,7 +3,7 @@
 CREATE TABLE tbl_usuario (
                 id_usuario INT AUTO_INCREMENT NOT NULL,
                 usuario_usuario VARCHAR(120) NOT NULL,
-                pasword_usuario VARCHAR(120) NOT NULL,
+                pasword_usuario VARCHAR(300) NOT NULL,
                 nombre_usuario VARCHAR(120) NOT NULL,
                 apellido_usuario VARCHAR(120) NOT NULL,
                 rol_id INT NOT NULL,
@@ -273,9 +273,9 @@ DATE_FORMAT(hora_factura,"%H")>=01   and DATE_FORMAT(hora_factura,"%H")<=23)THEN
 INSERT into tmp_factura(id_factura,usuario_tmp, descuento_factura, fecha_factura, total_factura, iva_factura, hora_factura) VALUES(null,usuario,0,curdate(),0,0,CURTIME());
 end if;
 ELSE
-IF NOT EXISTS(SELECT * from tbl_facturacion where tbl_facturacion.fecha_factura=curdate() and tbl_facturacion.id_cliente=usuario and 
+IF NOT EXISTS(SELECT * from tbl_facturacion where tbl_facturacion.fecha_factura=curdate() and estado_facturacion!="Verificacion" and tbl_facturacion.id_cliente=usuario and 
 DATE_FORMAT(tbl_facturacion.hora_factura,"%H")>=01   and DATE_FORMAT(tbl_facturacion.hora_factura,"%H")<=23)THEN
-INSERT into tbl_facturacion(tbl_facturacion.id_facturacion, tbl_facturacion.id_cliente,tbl_facturacion.descuento_factura,tbl_facturacion.fecha_factura,tbl_facturacion.total_factura, tbl_facturacion.iva_factura, tbl_facturacion.hora_factura,tbl_facturacion.n_factura) VALUES(null,usuario,0,curdate(),0,0,CURTIME(),n_facturas);
+INSERT into tbl_facturacion(tbl_facturacion.id_facturacion, tbl_facturacion.id_cliente,tbl_facturacion.descuento_factura,tbl_facturacion.fecha_factura,tbl_facturacion.total_factura, tbl_facturacion.iva_factura, tbl_facturacion.hora_factura,tbl_facturacion.n_factura,tbl_facturacion.id_forma_pago,tbl_facturacion.estado_facturacion) VALUES(null,usuario,0,curdate(),0,0,CURTIME(),n_facturas,1,"Nueva");
  
 end if;
 end if;
@@ -283,12 +283,16 @@ END;
 
 
 $$ DELIMITER ;
+
+
+
 DELIMITER $$
 CREATE PROCEDURE detalle_facturas(login int,id_detalle_kardexs int ,id_imagens int ,id_facturas int ,cantidads int ,precio_unitario_clientes double(10,2) )
 BEGIN
 DECLARE total double(10,2);
 DECLARE totalf double(10,2);
 DECLARE resultado double(10,2);
+DECLARE total_facturas double(10,2);
 set total=cantidads*precio_unitario_clientes;
 IF(login=0)THEN 
 if NOT EXISTS(SELECT * from tmp_detalle WHERE id_factura=id_facturas and id_imagen=id_imagens)then 
@@ -299,16 +303,31 @@ UPDATE tmp_detalle SET cantidad=cantidads , precio_total_cliente=total where id_
 END IF;
 
 ELSE
-if NOT EXISTS(SELECT * from detalle_factura WHERE id_factura=id_facturas and id_imagen=id_imagens)then 
-INSERT into detalle_factura(id_detalle,id_detalle_kardex,id_imagen,id_factura,cantidad,precio_unitario_cliente,precio_total_cliente) VALUES (null,id_detalle_kardexs,id_imagens,id_facturas,cantidads,precio_unitario_clientes,total);
+if NOT EXISTS(SELECT * from detalle_factura WHERE detalle_factura.id_facturacion=id_facturas and id_imagen=id_imagens)then 
+INSERT into detalle_factura(detalle_factura.id_detalle_factura,id_detalle_kardex,id_imagen,id_facturacion,detalle_factura.cantidad_cliente,precio_unitario_cliente,precio_total_cliente) VALUES (null,id_detalle_kardexs,id_imagens,id_facturas,cantidads,precio_unitario_clientes,total);
+ SELECT sum(cantidad_cliente*precio_unitario_cliente) INTO total_facturas  from detalle_factura where id_facturacion=id_facturas;
+ UPDATE tbl_facturacion SET iva_factura=(total_facturas*0.12), total_factura=(total_facturas+(total_facturas*0.12)) where id_facturacion=id_facturas;
 ELSE 
-UPDATE detalle_factura SET cantidad=cantidads , precio_total_cliente=total where id_facturacion=id_facturas and id_imagen=id_imagens;
- 
+UPDATE detalle_factura SET detalle_factura.cantidad_cliente=cantidads , detalle_factura.precio_total_cliente=total where detalle_factura.id_facturacion=id_facturas and id_imagen=id_imagens;
+ SELECT sum(cantidad_cliente*precio_unitario_cliente) INTO total_facturas  from detalle_factura where id_facturacion=id_facturas;
+ UPDATE tbl_facturacion SET iva_factura=(total_facturas*0.12), total_factura=(total_facturas+(total_facturas*0.12)) where id_facturacion=id_facturas;
 END IF;
 
 end if;
 END;
 $$ DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
 DROP FUNCTION cantidad_productos;
 DELIMITER $$
 CREATE FUNCTION cantidad_productos(login int,id_facturas int,usuario varchar(120))RETURNS int
@@ -317,7 +336,7 @@ DECLARE total int;
 IF(login=0)then 
 SELECT COUNT(*) into total from tmp_detalle INNER JOIN tmp_factura on tmp_detalle.id_factura=tmp_factura.id_factura WHERE tmp_detalle.id_factura=id_facturas AND tmp_factura.fecha_factura=curdate()   and DATE_FORMAT(hora_factura,"%H")<=23 and tmp_factura.usuario_tmp=usuario;
 ELSE
-SELECT COUNT(*) into total from detalle_factura INNER JOIN tbl_facturacion on detalle_factura.id_factura=tbl_facturacion.id_facturacion WHERE tmp_detalle.id_factura=id_facturas and tbl_facturacion.fecha_factura=curdate() and DATE_FORMAT(hora_factura,"%H")<=23 and tbl_facturacion.id_cliente=usuario;
+SELECT COUNT(*) into total from detalle_factura INNER JOIN tbl_facturacion on detalle_factura.id_facturacion=tbl_facturacion.id_facturacion WHERE detalle_factura.id_facturacion=id_facturas and tbl_facturacion.fecha_factura=curdate() and DATE_FORMAT(hora_factura,"%H")<=23 and tbl_facturacion.id_cliente=usuario;
 end if;
 RETURN total;
 END;
@@ -334,7 +353,7 @@ CREATE PROCEDURE insertar_cliente(
     telefono_clientes VARCHAR(10),
     correo_clientes VARCHAR(120),
     id_parroquias int ,
-    direccion_clientes VARCHAR(120),usuario_usuarios varchar(120),pasword_usuarios varchar(120))
+    direccion_clientes VARCHAR(120),usuario_usuarios varchar(120),pasword_usuarios varchar(300))
 BEGIN
 IF(login=0)then 
 IF NOT EXISTS(SELECT * FROM tbl_clliente INNER JOIN tbl_usuario on tbl_usuario.cedula_usuario=tbl_clliente.cedula_cliente  WHERE cedula_cliente=cedula_clientes)THEN

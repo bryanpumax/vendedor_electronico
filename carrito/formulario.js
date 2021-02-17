@@ -104,7 +104,19 @@ function dezplazar(a) {
         $(".mid_step_" + a).show()
          $("#numero_pg").val(a);
 }
+function dezplazars(a) {
+    var divs = $(".steps").toArray().length;
+        var q1 = divs - 1;
+        var inicio = divs - q1;
+        for (let index = 1; index <= a; index++) {
+                $(".mid_step_" + index).hide();
+                $(".mid_step_" + index).css("width","70%");
+                
 
+        }
+        $(".mid_step_" + a).show()
+         $("#numero_pg").val(a);  $(".boton-derecho").attr("type",'submit');  $(".boton-derecho").html("Enviar")
+}
 function carga_datos_facturacion() {
     var variable = "dato=carga_datos_facturacion"
    $.ajax({
@@ -116,3 +128,43 @@ function carga_datos_facturacion() {
            }
    });
 }
+
+$("#cedula").change(function (e) { 
+       var variable="dato=cedula&cedula="+$(this).val()
+           $.ajax({
+           type: "POST",
+         url: "https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/controlador.php",
+                data: variable, 
+           success: function (response) {
+                 var jsonData = JSON.parse(response); 
+                 
+                 if (jsonData.contador>0) {
+                $("#nombre").val(jsonData.nombre)
+                $("#apellido").val(jsonData.apellido)    
+                $("#nombre").attr("readonly",true);   
+                $("#apellido").attr("readonly",true); 
+                $("#telefono").val(jsonData.telefono);
+                $("#correo").val(jsonData.correo);
+                $("#direccion").val(jsonData.direccion);
+                $("#usuario").val(jsonData.usuario);
+                $("#passwords").val(jsonData.password);
+                $("#provincia").html(jsonData.provincia)
+                $("#canton").html(jsonData.canton)
+                $("#parroquia").html(jsonData.parroquia)
+                 dezplazars(3)   
+                  
+                 } else {
+                $("#apellido").val(""); 
+                $("#nombre").val("");  
+                $("#nombre").val("");  
+                $("#telefono").val("");           
+                $("#apellido").removeAttr("readonly"); 
+                $("#nombre").removeAttr("readonly"); 
+                cargar_provincia();
+                    $("#canton").html("")
+                $("#parroquia").html("")
+                 }
+                
+           }
+   });
+});

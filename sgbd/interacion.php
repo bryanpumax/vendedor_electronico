@@ -26,6 +26,13 @@ function update($tabla,$campo_valor,$texto)
  $sql = $pdo->query($sentecia);
 return $sql;
 }
+function update_prueba($tabla,$campo_valor,$texto)
+{ 
+    $sentecia= "UPDATE $tabla SET $campo_valor where $texto";
+ 
+ 
+return $sentecia;
+}
 function delete($tabla,$campo_valor)
 {include "mysql.php";
        $sentecia=  "DELETE FROM $tabla where $campo_valor";
@@ -39,6 +46,13 @@ function procedimiento($procedimiento,$valor)
         $sentecia= "Call $procedimiento($valor);"; 
  $sql = $pdo->query($sentecia);
 return $sql;
+}
+
+function procedimiento_prueba($procedimiento,$valor)
+{ 
+        $sentecia= "Call $procedimiento($valor);"; 
+ 
+return $sentecia;
 }
 function otras($texto_condicion)
 {include "mysql.php";
@@ -94,3 +108,5 @@ $bool= 0;
 return $bool; 
 
 }
+ 
+ 

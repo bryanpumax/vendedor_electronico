@@ -1,9 +1,11 @@
 <?php 
+session_set_cookie_params(0, '/', 'https://lab-mrtecks.com/');
+   session_start();
   $ruta_head_inicio=$_SERVER["DOCUMENT_ROOT"]."/app_php/vendedor_electronico/estructuracion_html/head_inicio.php";
   $ruta_menu=$_SERVER["DOCUMENT_ROOT"]."/app_php/vendedor_electronico/estructuracion_html/menu.php";
- 
+ include "sgbd/interacion.php";
  include $ruta_head_inicio;
-   
+
  include $ruta_menu;
  
 ?>
@@ -13,7 +15,7 @@
         <div class="row">
                 <div class="col-xs-12 col-xl-12 col-md-12 col-sm-12 col-lg-12 panel-derecho ">  
                         <?php
-                      
+                   
 date_default_timezone_set('America/Guayaquil');
 
                     /* $hora = date("H");  */
@@ -22,7 +24,10 @@ date_default_timezone_set('America/Guayaquil');
                  
                     
                     if (($hora>="00:00")!=1 && ($hora<="00:59")!=1) {
+                    
                     echo "Servidor esta haciendo su respaldo puedes revisar tus facturas";
+                    delete("tmp_factura","total_factura=0");
+                    delete("tbl_facturacion","estado_facturacion='Nueva'");
                     } else {
                     
                   $página_inicio = file_get_contents($_SERVER["DOCUMENT_ROOT"].'/app_php/vendedor_electronico/algoritmo/buscarbdd.php');

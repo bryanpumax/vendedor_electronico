@@ -67,10 +67,7 @@ $.ajax({
         }
     });
 }
-function cerrarmodal() {
-    $('#modal_producto').modal('hide')
 
-}
 var click=0;
 function seleccionar_color(usuario,id_imagen,detalle_kardex,login) {
     

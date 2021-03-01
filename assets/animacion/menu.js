@@ -12,3 +12,12 @@ var ruta=localStorage.getItem("ruta");
                 }
         });
 }
+
+function cerrarmodal() {
+    $('#modal_producto').modal('hide')
+
+}
+function cerrarmenu() {
+    $('body').removeClass('nav-open g-sidenav-show g-sidenav-pinned');
+    $('body').addClass('g-sidenav-hidden');
+  }

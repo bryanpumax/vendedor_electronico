@@ -98,15 +98,17 @@ echo  json_encode($row);
   if (isset($_SESSION["cedula"])) {
    $usuario_temporal=($_SESSION["id_cliente"]);
    $login=1;
+      $id_rol=$_SESSION["rol_id"];
 }else{
 $user_agent = $_SERVER['HTTP_USER_AGENT']; 
 $SO = getPlatform($user_agent);
    $usuario_temporal=$SO;
    $login=0;
+   $id_rol=1;
 }
- 
+ if($id_rol==1){
    $eje=factura($usuario_temporal,$login);
-  
+  }
    $sql=consultas("tbl_producto,tbl_imagen,detalle_kardex","*","where tbl_imagen.id_detalle_kardex=detalle_kardex.id_detalle_kardex and detalle_kardex.id_producto=tbl_producto.id_producto  group by id_proveedor");
   
       $html ='<div class="table-responsive"><table class="table caption-top table-bordered">
@@ -122,7 +124,7 @@ $html.='<tr><td>'.$row["nombre_producto"].'</td>
 <td class="">'.$row['marca_producto'].'</td>
 <td class="">'.$row['serie_producto'].'</td>
 <td>'.($row['precio_kardex']+1).'</td>
-<td class="col">'.imagens($row['id_producto'],$row["id_proveedor"],2).'</td><td><a onclick="color_proveedor_producto('.$row['id_detalle_kardex'].')" class="btn btn-success">Añadir</a></td></tr>';    
+<td >'.imagens($row['id_producto'],$row["id_proveedor"],2).'</td><td><a onclick="color_proveedor_producto('.$row['id_detalle_kardex'].')" class="btn btn-success">Añadir</a></td></tr>';    
 }
 $html.= '</table></div>';
 echo $html;
@@ -213,7 +215,7 @@ return $html;
 
 function factura($usuario,$login)
 {
-  $consulta_factura= consultas("tbl_facturacion","*",' ORDER BY n_factura DESC LIMIT 1'); 
+  $consulta_factura= consultas("tbl_facturacion","*","where estado_facturacion='Verificacion' ORDER BY n_factura DESC LIMIT 1"); 
 $n_facturas=$consulta_factura->fetch();
 $n_factura=$n_facturas["n_factura"]+1;
 

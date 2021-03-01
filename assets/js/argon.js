@@ -45,7 +45,7 @@ var Layout = (function() {
 
         // Store the sidenav state in a cookie session
         Cookies.set('sidenav-state', 'unpinned');
-    }
+    }close
 
     // Set sidenav state from cookie
 

@@ -10,9 +10,9 @@ $dato=$_REQUEST["dato"];
                echo  login($_REQUEST["usuario"],$_REQUEST["contrase"]);
                  break;
          
-         default:
-                 # code...
-                 break;
+case 'vista':
+echo vista();
+  break;
  }
  function login($usuario,$contrase)
  {
@@ -31,3 +31,7 @@ echo $página_inicio;
 }
 
  } 
+ function vista()
+ { 
+ return  'registro vendedores,tabla de todos los usuarios registrado ';
+ }

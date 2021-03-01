@@ -6,7 +6,7 @@ var options = {
         template: {
                 type: "custom",
               method: function(value,item) {
-   return '<img  style="width: 30%;" src="'+ item.ruta + '" />'+"\t"+ value;
+   return '<img  style="height: 100px;width: 100px;object-fit: fill;" src="'+ item.ruta + '" />'+"\t"+ value;
               }
         },
 

@@ -4,6 +4,26 @@ include("modelo.php");
 $dato=$_REQUEST["dato"];
 
 switch ($dato) {
+case 'btn_accion_modal':
+switch ($_REQUEST["accion"]) {
+        case '1':
+                    echo cc($_REQUEST["facturacion"],$_REQUEST["baucher"]);
+                break;
+    
+}
+   
+        break;
+case 'borrar_facturas':
+     echo borrar_facturas();
+        break;
+case 'descripcion_pago':
+       echo descripcion_pago($_REQUEST["tp"]);
+        break;
+case 'detalle_producto_factura':
+$id=$_REQUEST["id_facturacion"];
+        echo detalle_producto_facturas($id);
+        break;
+
 case 'cedula':
         echo usuario_existente($_REQUEST["cedula"]);
         break;
@@ -87,8 +107,19 @@ function eliminar($id_imagens,$id_factura)
          return seguimiento();
  }
 function usuario_existente( $cedula)
+{  return usuario_existente_modelo($cedula);    }
+function detalle_producto_facturas($ids)
+{return detalle_producto_factura_modelo($ids);}
+function descripcion_pago($tp)
 {
-        # code...
-        return usuario_existente_modelo($cedula);
-            
+        return descripcion_pagom($tp);
+}
+
+function borrar_facturas()
+{
+         return borrar_facturas_modelo();
+}
+function cc($id_factura,$baucher)
+{
+  echo actualizar("tbl_facturacion","documento='$baucher'","id_facturacion='$id_factura'");
 }

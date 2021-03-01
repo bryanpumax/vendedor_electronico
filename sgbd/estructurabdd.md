@@ -369,11 +369,11 @@ end if;
     DELIMITER
         ;
 DELIMITER $$
-CREATE PROCEDURE factura_eliminacion_tmp(id_facturas int,n_facturas varchar(10),id_clientes int ,iva_facturas decimal(10,2),total_facturas decimal(10,2),hora_facturas time,id_forma_pagos int,estado_facturacions varchar(120) )
+CREATE PROCEDURE factura_eliminacion_tmp(id_facturas int,n_facturas varchar(10),id_clientes int ,iva_facturas decimal(10,2),total_facturas decimal(10,2),hora_facturas time,id_forma_pagos int,estado_facturacions varchar(120),transportes varchar(120))
 BEGIN
 DECLARE id int;
 IF EXISTS(SELECT * from tmp_factura where tmp_factura.id_factura=id_facturas)then 
-INSERT into tbl_facturacion (id_facturacion,n_factura,id_cliente,iva_factura,total_factura,descuento_factura,fecha_factura,hora_factura,id_forma_pago,estado_facturacion)VALUES(null,n_facturas,id_clientes,iva_facturas,total_facturas,0,curdate(),hora_facturas,id_forma_pagos,estado_facturacions);
+INSERT into tbl_facturacion (id_facturacion,n_factura,id_cliente,iva_factura,total_factura,descuento_factura,fecha_factura,hora_factura,id_forma_pago,estado_facturacion,transporte)VALUES(null,n_facturas,id_clientes,iva_facturas,total_facturas,0,curdate(),hora_facturas,id_forma_pagos,estado_facturacions,transportes);
 SELECT id_facturacion into id 
 from tbl_facturacion where tbl_facturacion.id_cliente=id_clientes and tbl_facturacion.fecha_factura=curdate() and tbl_facturacion.hora_factura=hora_facturas;
 INSERT into detalle_factura(id_detalle_factura,id_facturacion,id_detalle_kardex,id_imagen,cantidad_cliente,precio_unitario_cliente,precio_total_cliente)

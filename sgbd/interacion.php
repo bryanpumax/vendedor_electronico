@@ -40,6 +40,11 @@ function delete($tabla,$campo_valor)
  $sql = $pdo->query($sentecia);
 return $sql;
 }
+function delete_prueba($tabla,$campo_valor)
+{include "mysql.php";
+       $sentecia=  "DELETE FROM $tabla where $campo_valor"; 
+return $sentecia;
+}
 function procedimiento($procedimiento,$valor)
 {include "mysql.php";
 //valor debes enviarle  con una  cadena  de texto

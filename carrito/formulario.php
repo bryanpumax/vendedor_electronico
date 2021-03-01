@@ -132,6 +132,7 @@
                                                         <h5 class="card-title">Pago</h5>
                                                         <p class="card-text"> <select class="form-control"
                                                                         name="tipo_pago" id="tipo_pago">
+                                                                        <option value="0">Seleccione tipo de  pago</option>
                                                                         <option value="1">Efectivo</option>
                                                                         <option value="2">Pinchicha</option>
                                                                         <option value="3">Bolivariano</option>
@@ -142,14 +143,38 @@
                                                 </div>
                                         </div>
                                 </div>
-                                <div class="col-sm-6">
+                             <div class="col-sm-6">
+                                        <div class="card ">
+                                                <div class="card-body">
+                                                        <div class="contenido-pago"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               
+                        </div>
+                         <div class="row">
+                           <div class="col-sm-6">
+                                        <div class="card">
+                                                <div class="card-body">
+                                                        <h5 class="card-title">Recogeras los productos </h5>
+                                                        <p class="card-text"> <select class="form-control"
+                                                                        name="transporte" id="transporte">
+                                                                        <option value="0">Seleccione </option>
+                                                                        <option value="Local">Local</option>
+                                                                        <option value="Casa">En tu hogar</option>
+                                                                </select></p>
+                                                </div>
+                                        </div>
+                                </div>
+                           <div class="col-sm-6">
                                         <div class="card">
                                                 <div class="card-body">
                                                         <div class="contenido-factura"></div>
                                                 </div>
                                         </div>
                                 </div>
-                        </div>
+                                    
+                                </div>
                 </div>';
                 echo '
         </div>

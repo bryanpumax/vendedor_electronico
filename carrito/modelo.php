@@ -41,7 +41,7 @@ if ($login==0) {
   $suma=0;
   $html=' 
 <table class="table">
-     <thead><tr ><td class="" >Producto</td>
+     <thead><tr ><td class="" >Producto</td>  <td>Detalle</td>
      <td>Cantidad</td>
      <td>Precio</td>
      <td>Total</td>
@@ -51,16 +51,16 @@ if ($login==0) {
   while ($row=$consulta->fetch()) {
     $html.='  <tr>
 <td >
-<div class="row">
+ 
 <div class=""><img style="height: 100px;width: 100px;object-fit: fill;"
- src="'.$row["ruta"].'" alt="'.$row["nombre_producto"].' '.$row["color"].'"> </div>
-
+ src="'.$row["ruta"].'" alt="'.$row["nombre_producto"].' '.$row["color"].'"> </div> </td>
+ <td>
                         <div class="offset-md-2 datos_informacion text-center">
                         <div class="row">'.$row["nombre_producto"].'</div>
                         <div class="row">'.$row["marca_producto"].'</div>
                         <div class="row">'.$row["color"].'</div>
                         <div class="row">'.$row["serie_producto"].'</div>
-                        </div></div>
+                        </div> 
                         </td>
                         <td><div class="input-group">
 
@@ -356,6 +356,7 @@ $n2_factura=generate_numbers($n_factura,1,10);
                                                         <div class="row">
                                                                 <div class="col">SubTotal</div>
                                                                 <div class="col">$ '.$suma.'
+                                                                    <input type="hidden"  value="'.$suma.'" name="subtotal" id="subtotal">
                                                                 </div>
                                                         </div>
 
@@ -368,11 +369,17 @@ $n2_factura=generate_numbers($n_factura,1,10);
 
                                                         <div class="row">
                                                                 <div class="col">Total</div>
-                                                                <div class="col">$'.$total.'
+                                                                <div class="col">  <p class="total_vista">$'.$total.'</p> 
                                                                 <input type="hidden" value="'.$total.'" name="total_factura" id="total_factura">
                                                                  <input type="hidden"  value="0" name="descuento_factura" id="descuento_factura">
                                                                  <input type="hidden"  value="'.$hora.'" name="hora_factura" id="hora_factura">
                                                                 </div>
+
+                                                        </div>
+                                                         
+                                                              
+                                                                <div class="envio"> </div>
+                                                                 <input type="hidden"  value="" name="envio" id="envio">
                                                         </div>
                                                         </p>';
 return $html;
@@ -418,6 +425,7 @@ $text_factura="";
 if (isset($_SESSION["cedula"])) {
    $usuario=($_SESSION["id_cliente"]);
    $login=1;
+   $id_rol=$_SESSION["rol_id"];
 }else{
 $user_agent = $_SERVER['HTTP_USER_AGENT']; 
 $SO = getPlatform($user_agent);
@@ -425,17 +433,14 @@ $SO = getPlatform($user_agent);
    $login=0;
 }
 if ($login==1)  {
+if ($id_rol==1) {
+
   $tabla="tbl_facturacion";
   $campo_usuario=" id_cliente";
   $text_factura="id_facturacion";
   $tabla2="detalle_factura";
- 
-}
- 
-                 
-
-  $consulta= consultas("$tabla","*","  where   $campo_usuario='$usuario' and DATE_FORMAT(hora_factura,'%H')>=01   and DATE_FORMAT(hora_factura,'%H')<=23");   
-$html='<table class="table">
+   $consulta= consultas("$tabla","*"," INNER JOIN tbl_forma_pago on tbl_forma_pago.id_forma_pago=tbl_facturacion.id_forma_pago  where   $campo_usuario='$usuario' and DATE_FORMAT(hora_factura,'%H')>=01   and DATE_FORMAT(hora_factura,'%H')<=23 and estado_facturacion!='Nueva' ");   
+$html='<table class="table" id="cliente" name="cliente">
         <thead>
                 <tr>
                         <th>N factura</th>
@@ -445,14 +450,47 @@ $html='<table class="table">
                         <th>Accion</th>
                 </tr>
         </thead> <tbody >';
+} else {            
+  $tabla="tbl_facturacion";
+ 
+  $text_factura="id_facturacion";
+  $tabla2="detalle_factura";
+   $consulta= consultas("$tabla","*","  INNER JOIN tbl_clliente on tbl_clliente.id_cliente=tbl_facturacion.id_cliente INNER JOIN tbl_forma_pago on tbl_forma_pago.id_forma_pago=tbl_facturacion.id_forma_pago  where    DATE_FORMAT(hora_factura,'%H')>=01   and DATE_FORMAT(hora_factura,'%H')<=23 ");   
+$html='<table class="table superior"  >
+        <thead>
+                <tr>
+                  <th>Cliente</th>
+                        <th>N factura</th>
+                        <th>Fecha hora</th>
+                        <th>Valor</th>
+                        <th>Estado</th>
+                        <th>Accion</th>
+                </tr>
+        </thead> <tbody >';
+}
+
+} 
+
 while ($row=$consulta->fetch()) { 
-  $html.='  <tr>
-                        <td scope="row">'.$row["n_factura"].'</td>
+$transporte=$row["transporte"];
+$tipo_pago=$row["tipo_pago"];
+
+  $html.='  <tr>';
+  if ($id_rol>=5) {
+  $html.='<td scope="row">'.$row["nombre_cliente"].' '.$row["apellido_cliente"].'</td>';
+  }
+                  $html.='<td scope="row">'.$row["n_factura"].'</td>
                         <td>'.$row["fecha_factura"].' '.$row["hora_factura"].'</td>
                         <td>$'.$row["total_factura"].'</td>
                         <td>'.$row["estado_facturacion"].'</td>
-                        <td><button type="button" name="" id="" class="btn btn-primary ">Detalle-'.$row["id_cliente"].'</button>
-<button type="button" name="" id="" class="btn btn-primary ">Pagar</button></td>
+                        <td><button type="button" onclick="detalle_producto_factura('.$row["id_facturacion"].')" name="" id="" class="btn btn-primary ">Detalle</button>';
+                        if ($id_rol<2) {
+                     $html.=boton_comprobante($tipo_pago,$row["id_facturacion"],$transporte,$row["estado_facturacion"]);
+                        }  
+
+/* $html.='<button type="button" name="" id="" class="btn btn-primary" onclick="comprobante('.$row["id_facturacion"].')">'.$transporte.'</button>'; */
+
+$html.='</td>
                 </tr>';
 }
 $html.='  </tbody>
@@ -460,3 +498,100 @@ $html.='  </tbody>
 return $html;
 
 }
+function detalle_producto_factura_modelo($id_facturacion)
+{
+$consulta=consultas("detalle_factura","*","INNER JOIN detalle_kardex on detalle_kardex.id_detalle_kardex=detalle_factura.id_detalle_kardex INNER JOIN tbl_imagen on tbl_imagen.id_imagen=detalle_factura.id_imagen INNER JOIN tbl_producto on tbl_producto.id_producto=detalle_kardex.id_producto where id_facturacion=$id_facturacion");
+$html='<table class="table" id="tb_detalle_producto_factura_modelo" name="tb_detalle_producto_factura_modelo">
+<thead>
+<tr>
+<th>Producto</th>
+<th>Detalle</th>
+<th>Cantidad</th>
+<th>Precio</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+';
+
+
+ while ($row=$consulta->fetch()) {
+ $total=((0.12*$row["precio_total_cliente"])+$row["precio_total_cliente"]);
+  $html.='<tr><td> 
+<div class=""><img style="height: 100px;width: 100px;object-fit: fill;"
+ src="'.$row["ruta"].'" alt="'.$row["nombre_producto"].' '.$row["color"].'"> </div></td><td>
+
+                        <div class="datos_informacion text-center">
+                        <div class="row">'.$row["nombre_producto"].'</div>
+                        <div class="row">'.$row["marca_producto"].'</div>
+                        <div class="row">'.$row["color"].'</div>
+                        <div class="row">'.$row["serie_producto"].'</div>
+                    </div></td>
+<td>'.$row["cantidad_cliente"].'</td>
+<td>'.$row["precio_unitario_cliente"].'</td><td>'.$total.'</td></tr>';
+} 
+$html.='</tbody></table>';
+  return $html;
+}
+function descripcion_pagom($tp)
+{
+  # code...
+   $html="";
+  if ($tp>1) {
+  $consulta=consultas("tbl_forma_pago","*","where id_forma_pago=$tp");
+  $co=$consulta->fetch();
+ 
+  $html.='El numero de cuenta :'.$co["descripcion"].'<br>Le pertene a:'.$co["duenio"];
+  } else {
+  $html.="";
+  }
+return $html;
+}
+
+function boton_comprobante($valor,$id_facturacion,$transporte,$estado_facturacion)
+{
+  $html="";
+  $separa=substr($valor,0,5);
+ switch ($transporte) {
+   case 'Casa':
+ if ($separa=="Banco") {
+ if ($estado_facturacion=="Verificacion") {
+    $html='<button type="button" name="" id="" class="btn btn-success" onclick="comprobante_casa('.$id_facturacion.',\''.$valor.'\')">Baucher del '.$valor.'</button>';  
+ } else {
+   # code...
+ } 
+  } else {
+     $html='<button type="button" name="" id="" class="btn btn-danger" onclick="imprimir_factura_casa('.$id_facturacion.')">Imprimir Factura </button>';  
+  }
+     break;
+   
+   case 'Local':
+      if ($separa=="Banco") {
+       if ($estado_facturacion=="Verificacion") {
+      $html='<button type="button" name="" id="" class="btn btn-success" onclick="comprobante_local('.$id_facturacion.',\''.$valor.'\')">Baucher lc del '.$valor.'</button>';  
+ } else {
+   # code...
+ } 
+ 
+  } else {
+     $html='<button type="button" name="" id="" class="btn btn-danger" onclick="imprimir_factura_local('.$id_facturacion.')">Enviar Factura</button>';  
+  }
+     break;
+ }
+ 
+  
+
+  return $html;
+}
+
+function borrar_facturas_modelo()
+{ 
+delete("tmp_detalle","cantidad>0 ;Truncate tmp_detalle;");
+ 
+           delete("tbl_facturacion"," estado_facturacion='Nueva'");
+          delete(" tmp_factura ","total_factura>=0");
+}
+ function actualizar($tabla,$set,$campo)
+ {
+   return update($tabla,$set,$campo);
+ }

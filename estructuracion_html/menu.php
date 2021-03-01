@@ -60,32 +60,32 @@ echo '    <span class="nav-link-text">Login</span>';
 
               </a>
             </li>
-                   <li class="nav-item">
-              <a class="nav-link active"  onclick="contenido(\''."usuario/desconectar.php".'\')" href="#">
-            <i class="fas fa-user-tie text-primary" ></i>
-                <span class="nav-link-text">Desconectar</span>
-              </a>
-            </li>';
- if ($_SESSION["id_rol"]>1) {
+          ';
+ if ($_SESSION["rol_id"]>=9) {
    echo '   <li class="nav-item">
-              <a class="nav-link active" onclick="contenido(\''."carrito/seguimiento.html".'\')">
+              <a class="nav-link active" onclick="contenido(\''."facturas/index.php?dato=banco".'\')">
               <i class="far fa-list-alt text-info"></i>
-                <span class="nav-link-text">Seguimiento de facturas</span>
+                <span class="nav-link-text">Bancos</span>
 
               </a>
             </li>
                    <li class="nav-item">
-              <a class="nav-link active"  onclick="contenido(\''."usuario/desconectar.php".'\')" href="#">
+              <a class="nav-link active"  onclick="contenido(\''."usuario/vista.php".'\')" href="#">
             <i class="fas fa-user-tie text-primary" ></i>
-                <span class="nav-link-text">Desconectar</span>
+                <span class="nav-link-text">Usuarios</span>
               </a>
             </li>';
  }
 } 
-         
-           echo '<li class="nav-item d-xl-none">
+        echo '         <li class="nav-item">
+              <a class="nav-link active"  onclick="contenido(\''."usuario/desconectar.php".'\')" href="#">
+            <i class="fas fa-user-tie text-primary" ></i>
+                <span class="nav-link-text">Desconectar</span>
+              </a>
+            </li>'; 
+           echo '<li class="nav-item d-xl-none ">
           
-              <div class=" nav-link sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">
+              <div class=" nav-link sidenav-toggler sidenav-toggler-dark"  onclick="cerrarmenu()">
                 <div class="sidenav-toggler-inner">
           <i class="fas fa-bars"></i>
              <span class="nav-link-text">Cerrar</span>

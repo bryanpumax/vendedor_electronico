@@ -418,84 +418,83 @@ function usuario_existente_modelo($cedula)
 function seguimiento( )
 {
   $usuario="";
-$login="";
-$tabla="";
-$campo_usuario="";
-$text_factura="";
-if (isset($_SESSION["cedula"])) {
-   $usuario=($_SESSION["id_cliente"]);
-   $login=1;
-   $id_rol=$_SESSION["rol_id"];
-}else{
-$user_agent = $_SERVER['HTTP_USER_AGENT']; 
-$SO = getPlatform($user_agent);
-   $usuario=$SO;
-   $login=0;
-}
-if ($login==1)  {
-if ($id_rol==1) {
-
-  $tabla="tbl_facturacion";
-  $campo_usuario=" id_cliente";
-  $text_factura="id_facturacion";
-  $tabla2="detalle_factura";
-   $consulta= consultas("$tabla","*"," INNER JOIN tbl_forma_pago on tbl_forma_pago.id_forma_pago=tbl_facturacion.id_forma_pago  where   $campo_usuario='$usuario' and DATE_FORMAT(hora_factura,'%H')>=01   and DATE_FORMAT(hora_factura,'%H')<=23 and estado_facturacion!='Nueva' ");   
-$html='<table class="table" id="cliente" name="cliente">
-        <thead>
-                <tr>
-                        <th>N factura</th>
-                        <th>Fecha hora</th>
-                        <th>Valor</th>
-                        <th>Estado</th>
-                        <th>Accion</th>
-                </tr>
-        </thead> <tbody >';
-} else {            
-  $tabla="tbl_facturacion";
- 
-  $text_factura="id_facturacion";
-  $tabla2="detalle_factura";
-   $consulta= consultas("$tabla","*","  INNER JOIN tbl_clliente on tbl_clliente.id_cliente=tbl_facturacion.id_cliente INNER JOIN tbl_forma_pago on tbl_forma_pago.id_forma_pago=tbl_facturacion.id_forma_pago  where    DATE_FORMAT(hora_factura,'%H')>=01   and DATE_FORMAT(hora_factura,'%H')<=23 ");   
-$html='<table class="table superior"  >
-        <thead>
-                <tr>
-                  <th>Cliente</th>
-                        <th>N factura</th>
-                        <th>Fecha hora</th>
-                        <th>Valor</th>
-                        <th>Estado</th>
-                        <th>Accion</th>
-                </tr>
-        </thead> <tbody >';
-}
-
-} 
-
-while ($row=$consulta->fetch()) { 
-$transporte=$row["transporte"];
-$tipo_pago=$row["tipo_pago"];
-
-  $html.='  <tr>';
-  if ($id_rol>=5) {
-  $html.='<td scope="row">'.$row["nombre_cliente"].' '.$row["apellido_cliente"].'</td>';
+  $login="";
+  $tabla="";
+  $campo_usuario="";
+  $text_factura="";
+  if (isset($_SESSION["cedula"])) {
+    $usuario=($_SESSION["id_cliente"]);
+    $login=1;
+    $id_rol=$_SESSION["rol_id"];
+  }else{
+  $user_agent = $_SERVER['HTTP_USER_AGENT']; 
+  $SO = getPlatform($user_agent);
+    $usuario=$SO;
+    $login=0;
   }
-                  $html.='<td scope="row">'.$row["n_factura"].'</td>
-                        <td>'.$row["fecha_factura"].' '.$row["hora_factura"].'</td>
-                        <td>$'.$row["total_factura"].'</td>
-                        <td>'.$row["estado_facturacion"].'</td>
-                        <td><button type="button" onclick="detalle_producto_factura('.$row["id_facturacion"].')" name="" id="" class="btn btn-primary ">Detalle</button>';
-                        if ($id_rol<2) {
-                     $html.=boton_comprobante($tipo_pago,$row["id_facturacion"],$transporte,$row["estado_facturacion"]);
-                        }  
+  if ($login==1)  {
+  if ($id_rol==1) {
 
-/* $html.='<button type="button" name="" id="" class="btn btn-primary" onclick="comprobante('.$row["id_facturacion"].')">'.$transporte.'</button>'; */
+    $tabla="tbl_facturacion";
+    $campo_usuario=" id_cliente";
+ 
+    $consulta= consultas("$tabla","*"," INNER JOIN tbl_forma_pago on tbl_forma_pago.id_forma_pago=tbl_facturacion.id_forma_pago  where   $campo_usuario='$usuario' and DATE_FORMAT(hora_factura,'%H')>=01   and DATE_FORMAT(hora_factura,'%H')<=23 and estado_facturacion!='Nueva' ");   
+  $html='<table class="table" id="cliente" name="cliente">
+          <thead>
+                  <tr>
+                          <th>N factura</th>
+                          <th>Fecha hora</th>
+                          <th>Valor</th>
+                        <th>Estado</th>
+                        <th>Accion</th>
+                </tr>
+        </thead> <tbody >';
+  } else {            
+    $tabla="tbl_facturacion";
+  
+    $text_factura="id_facturacion";
+    $tabla2="detalle_factura";
+    $consulta= consultas("$tabla","*","  INNER JOIN tbl_clliente on tbl_clliente.id_cliente=tbl_facturacion.id_cliente INNER JOIN tbl_forma_pago on tbl_forma_pago.id_forma_pago=tbl_facturacion.id_forma_pago  where    DATE_FORMAT(hora_factura,'%H')>=01   and DATE_FORMAT(hora_factura,'%H')<=23 ");   
+  $html='<table class="table superior"  >
+          <thead>
+                  <tr>
+                    <th>Cliente</th>
+                          <th>N factura</th>
+                          <th>Fecha hora</th>
+                          <th>Valor</th>
+                          <th>Estado</th>
+                          <th>Accion</th>
+                  </tr>
+          </thead> <tbody >';
+  }
 
-$html.='</td>
-                </tr>';
-}
-$html.='  </tbody>
-</table>';
-return $html;
+  } 
+
+  while ($row=$consulta->fetch()) { 
+  $transporte=$row["transporte"];
+  $tipo_pago=$row["tipo_pago"];
+
+    $html.='  <tr>';
+    if ($id_rol>=5) {
+    $html.='<td scope="row">'.$row["nombre_cliente"].' '.$row["apellido_cliente"].'</td>';
+    }
+                    $html.='<td scope="row">'.$row["n_factura"].'</td>
+                          <td>'.$row["fecha_factura"].' '.$row["hora_factura"].'</td>
+                          <td>$'.$row["total_factura"].'</td>
+                          <td>'.$row["estado_facturacion"].'</td>
+                          <td><button type="button" onclick="detalle_producto_factura('.$row["id_facturacion"].')" name="" id="" class="btn btn-primary ">Detalle</button>';
+                          if ($id_rol<2) {
+                      $html.=boton_comprobante($row["n_factura"],$tipo_pago,$row["id_facturacion"],$transporte,$row["estado_facturacion"]);
+                          }  
+
+  /* $html.='<button type="button" name="" id="" class="btn btn-primary" onclick="comprobante('.$row["id_facturacion"].')">'.$transporte.'</button>'; */
+
+  $html.='</td>
+                  </tr>';
+  }
+  $html.='  </tbody>
+  </table>';
+  return $html;
 
 }
 function detalle_producto_factura_modelo($id_facturacion)
@@ -548,15 +547,15 @@ function descripcion_pagom($tp)
 return $html;
 }
 
-function boton_comprobante($valor,$id_facturacion,$transporte,$estado_facturacion)
+function boton_comprobante($n,$valor,$id_facturacion,$transporte,$estado_facturacion)
 {
   $html="";
   $separa=substr($valor,0,5);
  switch ($transporte) {
-   case 'Casa':
+   case 'Ya te enviamos hacia tu Casa':
  if ($separa=="Banco") {
  if ($estado_facturacion=="Verificacion") {
-    $html='<button type="button" name="" id="" class="btn btn-success" onclick="comprobante_casa('.$id_facturacion.',\''.$valor.'\')">Baucher del '.$valor.'</button>';  
+    $html='<button type="button" name="" id="" class="btn btn-success" onclick="comprobante_casa('."'$n'".','.$id_facturacion.',\''.$valor.'\')">Baucher del '.$valor.'</button>';  
  } else {
    # code...
  } 
@@ -565,16 +564,16 @@ function boton_comprobante($valor,$id_facturacion,$transporte,$estado_facturacio
   }
      break;
    
-   case 'Local':
+   case 'Ven a recoger a nuestro Local':
       if ($separa=="Banco") {
        if ($estado_facturacion=="Verificacion") {
-      $html='<button type="button" name="" id="" class="btn btn-success" onclick="comprobante_local('.$id_facturacion.',\''.$valor.'\')">Baucher lc del '.$valor.'</button>';  
+      $html='<button type="button" name="" id="" class="btn btn-success" onclick="comprobante_local('."'$n'".','.$id_facturacion.',\''.$valor.'\')">Baucher lc del '.$valor.'</button>';  
  } else {
    # code...
  } 
  
   } else {
-     $html='<button type="button" name="" id="" class="btn btn-danger" onclick="imprimir_factura_local('.$id_facturacion.')">Enviar Factura</button>';  
+     $html='<button type="button" name="" id="" class="btn btn-danger" onclick="imprimir_factura_local('.$id_facturacion.','."'$n'".')">Enviar Factura</button>';  
   }
      break;
  }
@@ -590,6 +589,11 @@ delete("tmp_detalle","cantidad>0 ;Truncate tmp_detalle;");
  
            delete("tbl_facturacion"," estado_facturacion='Nueva'");
           delete(" tmp_factura ","total_factura>=0");
+  $consulta=consultas("tbl_bancos","*","");
+ 
+  while ($row=$consulta->fetch()) {
+  update("tbl_facturacion","estado_facturacion=concat('Baucher comprobado<br>',transporte)","documento='".$row["documento"]."'");
+} 
 }
  function actualizar($tabla,$set,$campo)
  {

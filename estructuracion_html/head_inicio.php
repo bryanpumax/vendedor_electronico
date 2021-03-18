@@ -32,6 +32,8 @@
  
          <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/plugins/EasyAutocomplete/jquery.easy-autocomplete.min.js" type="text/javascript">
          </script>
+          <link href="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/plugins/alertify/css/alertify.css" rel="stylesheet"
+                 type="text/css">
        
  </head>
 

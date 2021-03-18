@@ -23,12 +23,12 @@ $numerofila=$hoja->getHighestRow();
                 $valor="null,'$newDate',$banco,$b";
                 if ((existe_datos("tbl_bancos","where id_forma_pago=$banco and documento='$b'")>0)) {
                          if(existe_datos("tbl_facturacion","where  documento='$b'")){
-                      update("tbl_facturacion","estado_facturacion='Baucher comprobado'","documento='$b'");
+                      update("tbl_facturacion","estado_facturacion=concat('Baucher comprobado<br>',transporte)","documento='$b'");
                     } 
                 }else {
                     insertar("tbl_bancos","id_bancos, fecha, id_forma_pago, documento",$valor);
                     if(existe_datos("tbl_facturacion","where  documento='$b'")){
-                      update("tbl_facturacion","estado_facturacion='Baucher comprobado'","documento='$b'");
+                      update("tbl_facturacion","estado_facturacion=concat('Baucher comprobado<br>',transporte)","documento='$b'");
                     } 
                 }  
         } 

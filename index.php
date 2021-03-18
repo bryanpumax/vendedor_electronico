@@ -21,25 +21,18 @@ date_default_timezone_set('America/Guayaquil');
                     /* $hora = date("H");  */
                     
                     $hora = date("H:i"); 
-          if (  isset($_SESSION["rol_id"]) ) {
-          $rol_id=$_SESSION["rol_id"];
-if ($rol_id>=5) {
-        # code...
-        echo "roles grandes";
-
-          }        }  
+         
            if (($hora>="00:00")==1 && ($hora<="00:59")==1) {
                     
                     echo "Servidor esta haciendo su respaldo puedes revisar tus facturas";
               
                     } else {
-                    
+                  
                   $página_inicio = file_get_contents($_SERVER["DOCUMENT_ROOT"].'/app_php/vendedor_electronico/algoritmo/buscarbdd.php');
 echo $página_inicio;  
     
                  
-                        echo '<br>
-                        <br>
+                        echo ' 
                         <div class="vista col-sm-12 col-lg-12 col-dm-12 col-xs-12"></div>';
                            }
                     

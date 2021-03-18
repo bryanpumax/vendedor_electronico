@@ -42,7 +42,7 @@ $SO = getPlatform($user_agent);
      $_SESSION["nombre"]=$_POST["nombre"]." ".$_POST["apellido"];
     
 }
-   echo '<script>alert("Ingresar seguimiento de la factura en el menu");
+   echo '<script>
     window.location.href=("https://lab-mrtecks.com/app_php/vendedor_electronico/");
     </script>';   
  

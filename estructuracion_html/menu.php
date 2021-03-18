@@ -76,13 +76,14 @@ echo '    <span class="nav-link-text">Login</span>';
               </a>
             </li>';
  }
+
 } 
-        echo '         <li class="nav-item">
-              <a class="nav-link active"  onclick="contenido(\''."usuario/desconectar.php".'\')" href="#">
-            <i class="fas fa-user-tie text-primary" ></i>
-                <span class="nav-link-text">Desconectar</span>
-              </a>
-            </li>'; 
+echo '         <li class="nav-item">
+<a class="nav-link active"  onclick="contenido(\''."usuario/desconectar.php".'\')" href="#">
+<i class="fas fa-user-tie text-primary" ></i>
+  <span class="nav-link-text">Desconectar</span>
+</a>
+</li>'; 
            echo '<li class="nav-item d-xl-none ">
           
               <div class=" nav-link sidenav-toggler sidenav-toggler-dark"  onclick="cerrarmenu()">

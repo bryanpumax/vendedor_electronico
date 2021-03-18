@@ -1,5 +1,5 @@
 
- <div class="input-group ">
+ <div class="input-group buscador_easy">
 
          <input placeholder="Producto" class="form-control  "  name="searchs" type="text" id="searchs"  >
          <input placeholder="Presupuesto" class="form-control" name="presupuesto" type="text" id="presupuesto"  >

@@ -1,7 +1,5 @@
 <?php
-  $ruta_head_inicio=$_SERVER["DOCUMENT_ROOT"]."/app_php/vendedor_electronico/estructuracion_html/head_inicio.php";
-  $ruta_menu=$_SERVER["DOCUMENT_ROOT"]."/app_php/vendedor_electronico/estructuracion_html/menu.php";
- include "sgbd/interacion.php";
+  $ruta_head_inicio=$_SERVER["DOCUMENT_ROOT"]."/estructuracion_html/head_inicio.php"; 
  include $ruta_head_inicio;
 ?>
 <div class="container ">

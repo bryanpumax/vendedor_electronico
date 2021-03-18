@@ -16,6 +16,6 @@ if (ini_get("session.use_cookies")) {
 
 // Finalmente, destruir la sesión.
 session_destroy();
-    echo '<script>alert("Ingresar seguimiento de la factura en el menu");
-    window.location.href=("https://lab-mrtecks.com/app_php/vendedor_electronico/");
+    echo '<script> 
+    location.reload();
     </script>';  

@@ -80,7 +80,16 @@ echo $cantidad_compra;
  
        break;
 case 'div-vista':
- echo div_contenido_vista();
+  $funcion="";
+  if (  isset($_SESSION) ) { 
+    
+if ((isset($_SESSION["rol_id"])) &&($_SESSION["rol_id"]>4)) {  
+  $pagina_inicio = file_get_contents($_SERVER["DOCUMENT_ROOT"].'/app_php/vendedor_electronico/carrito/seguimiento.html');
+$funcion= '<script>$(".buscador_easy").hide()</script>'.$pagina_inicio;
+} else {$funcion='<script>$(".buscador_easy").show()</script>'.div_contenido_vista();}       }else {
+      $funcion='<script>$(".buscador_easy").show()</script>'.div_contenido_vista();  
+    }  
+ echo $funcion;
   break;
 }
  
@@ -215,7 +224,7 @@ return $html;
 
 function factura($usuario,$login)
 {
-  $consulta_factura= consultas("tbl_facturacion","*","where estado_facturacion='Verificacion' ORDER BY n_factura DESC LIMIT 1"); 
+  $consulta_factura= consultas("tbl_facturacion","*"," ORDER BY n_factura DESC LIMIT 1"); 
 $n_facturas=$consulta_factura->fetch();
 $n_factura=$n_facturas["n_factura"]+1;
 
@@ -262,4 +271,5 @@ $valor="$login,$detalle,$producto,$id_factura,1,$pvp";
  
 } 
  
+
 

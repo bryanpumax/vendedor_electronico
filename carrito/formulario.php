@@ -5,8 +5,7 @@
         <h1 class="col btn btn-primary inicio_steps disabled top_step_2" onclick="dezplazar(2)">Acceso al sistema</h1>
         <h1 class="col btn btn-primary inicio_steps disabled top_step_3" onclick="dezplazar(3)">Factura</h1>
 </div>
-<form class="needs-validation" action="https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/recibir.php"
-        method="post" novalidate>
+<form class="was-validated"  novalidate id="formulario_cliente" name="formulario_cliente">
         <div class="row">';
        
                echo ' <div class="mid_step_1 steps">
@@ -15,7 +14,7 @@
                         <div class="form-row">
                                 <div class="col-md-4 mb-3">
                                         <label for="validationCustom01">Cedula </label>
-                                        <input type="text" class="form-control" id="cedula" name="cedula"   required>
+                                        <input type="text" class="form-control" onkeypress="return numeros(event);" id="cedula" name="cedula"   required>
                                         <div class="invalid-feedback">
                                                 Pon tu cedula
                                         </div>
@@ -23,7 +22,7 @@
 
                                 <div class="col-md-4 mb-3">
                                         <label for="validationCustom01">Nombre</label>
-                                        <input type="text" class="form-control" readonly id="nombre" name="nombre"   
+                                        <input type="text" class="form-control" readonly id="nombre" name="nombre" onkeypress="return letra(event);"   
                                                 required>
                                         <div class="invalid-feedback">
                                                 Pon tu nombre
@@ -31,7 +30,7 @@
                                 </div>
                                 <div class="col-md-4 mb-3">
                                         <label for="validationCustom02">Apellido</label>
-                                        <input type="text" class="form-control" readonly id="apellido" name="apellido"  
+                                        <input type="text" class="form-control" readonly id="apellido" name="apellido"  onkeypress="return letra(event);"   
                                                 required>
                                         <div class="invalid-feedback">
                                                 Pon tu apellido
@@ -42,13 +41,13 @@
                                 <div class="col-md-6 mb-3 d-none">
                                         <label for="validationCustom03">Pais</label>
                                         <input type="text" class="form-control" readonly id="validationCustom03"
-                                                required>s
+                                                required>
                                         <div class="invalid-feedback">
                                                 Please provide a valid city.
                                         </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                        <label for="validationCustom04">Provincia</label>
+                                        <label for="validationCustom04">Provincia de donde vives</label>
                                         <select class="custom-select" readonly id="provincia" name="provincia" required>
 
                                         </select>
@@ -79,8 +78,7 @@
                         <div class="form-row">
                                 <div class="col-md-4 mb-3">
                                         <label for="validationCustom01">Telefono</label>
-                                        <input type="text" class="form-control" readonly id="telefono" name="telefono"  
-                                                required>
+                                        <input type="text" class="form-control" readonly id="telefono" name="telefono"    onkeypress="return numeros(event);" required>
                                         <div class="invalid-feedback">
                                                 Pon tu telefono
                                         </div>
@@ -88,7 +86,7 @@
 
                                 <div class="col-md-4 mb-3">
                                         <label for="validationCustom01">Correo electronico @</label>
-                                        <input type="text" class="form-control" readonly id="correo" name="correo"   required>
+                                        <input type="email" class="form-control" readonly id="correo" name="correo"   required>
                                         <div class="invalid-feedback">
                                                 Pon tu correo
                                         </div>
@@ -130,9 +128,9 @@
                                         <div class="card">
                                                 <div class="card-body">
                                                         <h5 class="card-title">Pago</h5>
-                                                        <p class="card-text"> <select class="form-control"
+                                                        <p class="card-text"> <select class="form-control is-invalid"
                                                                         name="tipo_pago" id="tipo_pago">
-                                                                        <option value="0">Seleccione tipo de  pago</option>
+                                                                        <option disabled value="">Seleccione tipo de  pago</option>
                                                                         <option value="1">Efectivo</option>
                                                                         <option value="2">Pinchicha</option>
                                                                         <option value="3">Bolivariano</option>
@@ -157,11 +155,11 @@
                                         <div class="card">
                                                 <div class="card-body">
                                                         <h5 class="card-title">Recogeras los productos </h5>
-                                                        <p class="card-text"> <select class="form-control"
+                                                        <p class="card-text"> <select class="form-control is-invalid"
                                                                         name="transporte" id="transporte">
-                                                                        <option value="0">Seleccione </option>
-                                                                        <option value="Local">Local</option>
-                                                                        <option value="Casa">En tu hogar</option>
+                                                                        <option disabled  value="">Seleccione </option>
+                                                                        <option value="Ven a recoger a nuestro Local">Local</option>
+                                                                        <option value="Ya te enviamos hacia tu Casa">En tu hogar</option>
                                                                 </select></p>
                                                 </div>
                                         </div>
@@ -182,11 +180,13 @@
                 <div class="offset-md-8">
                         <button type="button" class="btn btn-info boton-izquierdo"
                                 onclick="menos_steps()">Anterio</button>
-                        <button type="button" class=" btn btn-info boton-derecho" onclick="mas_steps()">Siguiente
+                        <button type="button" class=" btn btn-info boton-derecho">Siguiente
                         </button>
                 </div>
 
                 <input type="text" name="numero_pg" id="numero_pg" value="1">
         </div>
 </form>
-<script src="https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/formulario.js"></script>';
+ 
+<script src="https://lab-mrtecks.com/app_php/vendedor_electronico/carrito/formulario.js"></script>
+';

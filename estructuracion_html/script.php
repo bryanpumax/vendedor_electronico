@@ -12,7 +12,12 @@
 $ruta=$_SERVER["DOCUMENT_ROOT"]."/app_php/vendedor_electronico/assets/plugins/datables/js.php";
 include $ruta;?>
 <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/plugins/sweetalert/sweetalert2.9.js"> </script>
+<script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/plugins/alertify/alertify.js"> </script>
 <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/js/argon.js?v=1.2.0"> </script>
 <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/animacion/validacion_boostrap.js"> </script>
 <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/animacion/menu.js"> </script>
 <script src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/animacion/div-vista.js"> </script>
+<script>
+ alertify.set('notifier','position', 'top-right');
+ 
+</script>

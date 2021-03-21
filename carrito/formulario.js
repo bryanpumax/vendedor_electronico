@@ -3,14 +3,19 @@ $(function () {
         var divs = $(".steps").toArray().length;
         var q1 = divs - 1;
         var inicio = divs - q1;
-        $("#numero_pg").show()
+        $("#numero_pg").hide()
         for (let index = 1; index <= divs; index++) {
                 $(".mid_step_" + index).hide();
                 $(".mid_step_" + index).css("width", "70%");
         }
         $(".mid_step_" + inicio).show()
         cargar_provincia();
-        $(".boton-derecho").attr("disabled", true)
+        $("form[name='formulario_cliente']").submit(function (e) {
+                envio();
+
+        });
+
+
 });
 
 function menos_steps() {
@@ -86,7 +91,7 @@ $("#canton").change(function (e) {
                 data: variable,
                 success: function (response) {
                         $("#parroquia").html(response)
-                        $(".boton-derecho").attr("disabled", false)
+
                 }
         });
 });
@@ -209,6 +214,7 @@ $("#transporte").change(function (e) {
                 r = r + 2;
                 $("#total_factura").val(r);
                 $(".total_vista").html(r);
+                $(".boton-derecho").attr("type", 'submit'); $(".boton-derecho").html("Enviar")
         }
         else {
                 var r2 = (Number(sub) + Number(iva));
@@ -216,6 +222,7 @@ $("#transporte").change(function (e) {
                 $("#envio").val("0");
                 $("#total_factura").val(r2);
                 $(".total_vista").html(r2);
+                $(".boton-derecho").attr("type", 'submit'); $(".boton-derecho").html("Enviar")
         }
 });
 function validarcedula(ced) {
@@ -248,35 +255,82 @@ function validarcedula(ced) {
 }); */
 
 $(".boton-derecho[type=button]").click(function (e) {
-    
+
         switch ($("#numero_pg").val()) {
                 case "1":
-                        if ($("#telefono").val() == "" || $("#nombre").val()=="" || $("#apellido").val()=="" || $("#correo").val()=="" || $("#direccion").val()=="" ) {
-                                alertify.error("Datos vacios"); 
-                        }else{
-                                dezplazar(2) 
+                        if ($("#nombre").val() == "") { $("#nombre").focus(); } else {
+                                if ($("#apellido").val() == "") { $("#apellido").focus(); } else {
+                                        if ($("#provincia").val() == "0") {
+                                                $("#provincia").focus();
+                                        } else {
+                                                if ($("#canton").val() == "0") {
+                                                        $("#canton").focus();
+                                                } else {
+                                                        if ($("#parroquia").val() == "0") {
+                                                                $("#parroquia").focus();
+                                                        } else {
+                                                                if ($("#telefono").val() == "") { $("#telefono").focus(); } else {
+                                                                        if ($("#correo").val() == "") { $("#correo").focus(); } else {
+                                                                                if ($("#direccion").val() == "") { $("#direccion").focus(); }
+                                                                        }
+                                                                }
+                                                        }
+                                                }
+
+                                        }
+
+                                }
                         }
+                        if ($("#telefono").val().length < 10 && $("#telefono").val() != "" && $("#nombre").val() != "" && $("#apellido").val() != "" && $("#correo").val() != "" && $("#direccion").val() != "") {
+                                $("#telefono").focus()
+                                let r = 10 - $("#telefono").val().length
+                                alertify.error("No podemos registrar numero de telefono le falta " + r + " digitos")
+                        } else {
+
+
+                                validar_email();
+
+                        }
+
                         break;
-        case "2":
-                if ($("#usuario").val() == "" ||  $("#passwords").val()=="" ) {
-                        alertify.error("Datos vacios"); 
-                }else{
-                        dezplazar(3) 
-                }
-                
-        break;
-        case "3": 
-        if ($("#tipo_pago").val() == "" ||  $("#transporte").val()=="" ) {
-                alertify.error("Datos vacios"); 
-        }else{
-                dezplazars(3) 
-        }
-        break;
-             
+                case "2":
+                        if ($("#usuario").val() == ""  ) { $("#usuario").focus(); }
+                        else {
+                                if ($("#passwords").val() == "") { $("#passwords").focus(); }
+                        }
+                        if ($("#usuario").val() != "" && $("#passwords").val() != "") {
+                                dezplazar(3)
+                        }
+
+                        break;
+                case "3":
+                        if ($("#tipo_pago").val() == "") { $("#tipo_pago").focus(); } else {
+                                if ($("#transporte").val() == "") { $("#transporte").focus(); }
+                        }
+
+                        break;
+
         }
 });
 
-$(".boton-derecho[type=submit]").click(function (e) {
-        alert("gg")
 
-});
+
+function envio() {
+        alertify.success('Ok');
+
+}
+function validar_email() {
+        var email = $("#correo").val();
+        var formato = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        var v_email = formato.test(email);
+        if (v_email != true || email == "" && $("#telefono").val().length == 10 && $("#telefono").val() != "" && $("#nombre").val() != "" && $("#apellido").val() != "" && $("#correo").val() != "" && $("#direccion").val() != "") {
+                $("#correo").focus();
+                alertify.error("Correo electronico formato incorrecto");
+
+        } else {
+                if ($("#telefono").val().length == 10 && $("#telefono").val() != "" && $("#nombre").val() != "" && $("#apellido").val() != "" && $("#correo").val() != "" && $("#direccion").val() != "") { 
+                        $("#usuario").val(email)
+                        $("#usuario").attr("readonly", true);
+                        dezplazar(2) }
+        }
+}

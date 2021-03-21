@@ -10,7 +10,7 @@
  echo ' <a href="" class="text-primary user" >'.$_SESSION["nombre"].'</a> ';
  
 } 
-        echo '<a class="navbar-brand" href="javascript:void(0)">
+        echo '<a class="navbar-brand" href="https://lab-mrtecks.com/app_php/vendedor_electronico/">
           <img src="https://lab-mrtecks.com/app_php/vendedor_electronico/assets/imagen/logo.png" class="navbar-brand-img" alt="...">
           <br>
        ';

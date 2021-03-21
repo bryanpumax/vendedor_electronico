@@ -5,7 +5,7 @@
         <h1 class="col btn btn-primary inicio_steps disabled top_step_2" onclick="dezplazar(2)">Acceso al sistema</h1>
         <h1 class="col btn btn-primary inicio_steps disabled top_step_3" onclick="dezplazar(3)">Factura</h1>
 </div>
-<form class="was-validated"  novalidate id="formulario_cliente" name="formulario_cliente">
+<form class="was-validated"  novalidate id="formulario_cliente" name="formulario_cliente"  >
         <div class="row">';
        
                echo ' <div class="mid_step_1 steps">
@@ -79,7 +79,7 @@
                                 <div class="col-md-4 mb-3">
                                         <label for="validationCustom01">Telefono</label>
                                         <input type="text" class="form-control" readonly id="telefono" name="telefono"    onkeypress="return numeros(event);" required>
-                                        <div class="invalid-feedback">
+                                        <div class="invalid-feedback iphone">
                                                 Pon tu telefono
                                         </div>
                                 </div>
@@ -114,7 +114,7 @@
 
                                 <div class="col-md-6 mb-3">
                                         <label for="validationCustom01">Contraseña</label>
-                                        <input type="text" class="form-control" readonly id="passwords" name="passwords"  required>
+                                        <input type="password" class="form-control" readonly id="passwords" name="passwords"  required>
                                         <div class="invalid-feedback">
                                                 Pon tu contraseña
                                         </div>
@@ -130,7 +130,7 @@
                                                         <h5 class="card-title">Pago</h5>
                                                         <p class="card-text"> <select class="form-control is-invalid"
                                                                         name="tipo_pago" id="tipo_pago">
-                                                                        <option disabled value="">Seleccione tipo de  pago</option>
+                                                                        <option   value="">Seleccione tipo de  pago</option>
                                                                         <option value="1">Efectivo</option>
                                                                         <option value="2">Pinchicha</option>
                                                                         <option value="3">Bolivariano</option>
@@ -157,7 +157,7 @@
                                                         <h5 class="card-title">Recogeras los productos </h5>
                                                         <p class="card-text"> <select class="form-control is-invalid"
                                                                         name="transporte" id="transporte">
-                                                                        <option disabled  value="">Seleccione </option>
+                                                                        <option    value="">Seleccione </option>
                                                                         <option value="Ven a recoger a nuestro Local">Local</option>
                                                                         <option value="Ya te enviamos hacia tu Casa">En tu hogar</option>
                                                                 </select></p>
